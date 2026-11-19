@@ -64,7 +64,7 @@ HEADER = f"""<header class="site-header">
           <a href="qui-suis-je.html#mots_sur_moi">Quelques mots sur moi</a>
         </div>
       </div>
-      <a class="btn btn--primary btn--sm nav-cta" href="{{cta}}" target="_blank" rel="noopener">{{cta_label}}</a>
+      <a class="btn btn--primary btn--sm nav-cta" href="{{cta}}"{{cta_target}}>{{cta_label}}</a>
     </nav>
   </div>
 </header>
@@ -113,13 +113,15 @@ FOOTER = f"""</main>
 
 META = {
   "index":       ("Respiration Holotropique Paris", "Journées et stages de Respiration Holotropique à Paris avec Marina Charpentier.", "rh",
-                  "https://zfrmz.eu/KnjV2EiK7l2bAOtEc0mV", "Me pré-inscrire"),
+                  "preinscription.html", "Me pré-inscrire"),
   "breathwork":  ("Ateliers Yoga Transe", "Ateliers et stages de Breathwork Yoga Transe à Paris.", "breathwork",
                   "https://zfrmz.eu/MyJMEAk0XJLZboAQER3f", "M'inscrire"),
   "retraite":    ("Retraites Yoga Transe", "Retraites Yoga, Méditation et Respiration Holotropique.", "retraite",
                   "https://zfrmz.eu/m7InI4uDILU2KuvXhcYB", "Me pré-inscrire"),
+  "preinscription": ("Pré-inscription Respiration Holotropique", "Formulaire de pré-inscription aux journées et stages de Respiration Holotropique.", "rh",
+                  "#formulaire", "Me pré-inscrire"),
   "qui-suis-je": ("Marina Charpentier", "Psychopraticienne transpersonnelle, facilitatrice en Respiration Holotropique.", "qui",
-                  "https://zfrmz.eu/KnjV2EiK7l2bAOtEc0mV", "Me pré-inscrire"),
+                  "preinscription.html", "Me pré-inscrire"),
 }
 
 import hashlib
@@ -128,7 +130,7 @@ CSS_V, JS_V = _v("assets/style.css"), _v("assets/main.js")
 
 for name, (title, desc, page, cta, cta_label) in META.items():
     body = (PAGES / f"{name}.html").read_text(encoding="utf-8").replace("{{ARROW}}", ARROW)
-    html = HEAD.format(title=title, desc=desc, page=page, css_v=CSS_V) + HEADER.replace("{cta}", cta).replace("{cta_label}", cta_label) + body + FOOTER.replace("__JSV__", JS_V)
+    html = HEAD.format(title=title, desc=desc, page=page, css_v=CSS_V) + HEADER.replace("{cta}", cta).replace("{cta_target}", ' target="_blank" rel="noopener"' if cta.startswith("http") else "").replace("{cta_label}", cta_label) + body + FOOTER.replace("__JSV__", JS_V)
     (OUT / f"{name}.html").write_text(html, encoding="utf-8")
     print("écrit", name)
 

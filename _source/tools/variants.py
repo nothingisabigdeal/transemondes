@@ -2,8 +2,11 @@
 Usage : python3 _source/tools/variants.py  (depuis la racine du projet, après build.py)"""
 import re, json, subprocess, pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[2]
+def fixlinks(h): return h.replace('href="https://zfrmz.eu/KnjV2EiK7l2bAOtEc0mV" target="_blank" rel="noopener"', 'href="preinscription.html"')
+
 cur = (ROOT / "index.html").read_text(encoding="utf-8")
-old = subprocess.run(["git", "show", "70d02cf:index.html"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+old_raw = subprocess.run(["git", "show", "70d02cf:index.html"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+old = fixlinks(old_raw)
 ARROW = re.search(r'<svg viewBox="0 0 16 16".*?</svg>', cur, re.S).group(0)
 
 def hero(html):
