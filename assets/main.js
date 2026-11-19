@@ -41,6 +41,7 @@
   });
   document.addEventListener('click', function (e) { if (!e.target.closest('.nav__item')) closeAll(); });
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && header && header.classList.contains('is-open')) { toggle.click(); toggle.focus(); return; }
     if (e.key === 'Escape') { var open = document.querySelector('.nav__item.is-open'); closeAll(); if (open) open.querySelector('.nav__link').focus(); }
   });
 
@@ -54,7 +55,12 @@
   var today = new Date(); today.setHours(0, 0, 0, 0);
   document.querySelectorAll('[data-date]').forEach(function (el) {
     var d = new Date(el.getAttribute('data-date') + 'T23:59:59');
-    if (d < today) el.classList.add('is-past');
+    if (d < today) {
+      el.classList.add('is-past');
+      // une date passée n'est plus cliquable
+      el.querySelectorAll('a').forEach(function (a) { while (a.firstChild) a.parentNode.insertBefore(a.firstChild, a); a.remove(); });
+      el.classList.remove('date--link');
+    }
   });
 
   // Images indisponibles : on garde un cadre teinté

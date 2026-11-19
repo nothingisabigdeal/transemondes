@@ -266,6 +266,14 @@
   }
 
   next.addEventListener('click', function () { if (validate(pages[cur])) show(cur + 1); });
+  // Touche Entrée dans un champ : passe à l'étape suivante au lieu d'envoyer le formulaire
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < pages.length - 1) { e.preventDefault(); next.click(); }
+  });
+  // Avertir avant de quitter la page si le formulaire est commencé et pas envoyé
+  var dirty = false, sent = false;
+  form.addEventListener('input', function () { dirty = true; });
+  window.addEventListener('beforeunload', function (e) { if (dirty && !sent) { e.preventDefault(); e.returnValue = ''; } });
   back.addEventListener('click', function () { show(cur - 1); });
   steps.forEach(function (s, k) { s.addEventListener('click', function () {
     if (k < cur) return show(k);
@@ -278,6 +286,9 @@
     var d = document.getElementById('f-naissance').value; // AAAA-MM-JJ → jj-Mmm-aaaa (format Zoho)
     document.getElementById('f-date-zoho').value = d ? d.slice(8, 10) + '-' + MONTHS[+d.slice(5, 7) - 1] + '-' + d.slice(0, 4) : '';
     [].forEach.call(form.querySelectorAll('[data-show-if][hidden] input, [data-show-if][hidden] textarea'), function (el) { el.value = ''; });
+    // Téléphones : chiffres seulement (et + initial), pour que Zoho les accepte
+    ['f-tel', 'f-c-tel'].forEach(function (id) { var el = document.getElementById(id); el.value = el.value.trim().replace(/(?!^\+)[^\d]/g, ''); });
+    sent = true;
     submit.disabled = true; submit.firstChild.textContent = 'Envoi en cours… ';
     // Après l'envoi à Zoho (dans un cadre invisible), on enchaîne sur le questionnaire de santé
     var params = new URLSearchParams({ prenom: document.getElementById('f-prenom').value.trim(), nom: document.getElementById('f-nom').value.trim(),

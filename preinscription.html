@@ -8,18 +8,26 @@
 <title>Pré-inscription Respiration Holotropique</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Formulaire de pré-inscription aux journées et stages de Respiration Holotropique.">
-<link rel="icon" href="assets/img/3-2.png">
+<link rel="icon" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Transemondes">
+<meta property="og:title" content="Pré-inscription Respiration Holotropique">
+<meta property="og:description" content="Formulaire de pré-inscription aux journées et stages de Respiration Holotropique.">
+<meta property="og:image" content="https://nothingisabigdeal.github.io/transemondes/assets/img/og-image.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=a1050973">
+<link rel="stylesheet" href="assets/style.css?v=ddc0ab0f">
 </head>
 <body data-page="rh">
 <a class="skip" href="#contenu">Aller au contenu</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Transemondes, accueil">
-      <img src="assets/img/3-2.png" alt="" width="40" height="40">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo-128.png" alt="" width="40" height="40">
       <span><span class="brand__name">Transemondes</span><span class="brand__sub">Respiration holotropique · Yoga Transe</span></span>
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav"><span>Menu</span></button>
@@ -327,6 +335,14 @@
   }
 
   next.addEventListener('click', function () { if (validate(pages[cur])) show(cur + 1); });
+  // Touche Entrée dans un champ : passe à l'étape suivante au lieu d'envoyer le formulaire
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < pages.length - 1) { e.preventDefault(); next.click(); }
+  });
+  // Avertir avant de quitter la page si le formulaire est commencé et pas envoyé
+  var dirty = false, sent = false;
+  form.addEventListener('input', function () { dirty = true; });
+  window.addEventListener('beforeunload', function (e) { if (dirty && !sent) { e.preventDefault(); e.returnValue = ''; } });
   back.addEventListener('click', function () { show(cur - 1); });
   steps.forEach(function (s, k) { s.addEventListener('click', function () {
     if (k < cur) return show(k);
@@ -339,6 +355,9 @@
     var d = document.getElementById('f-naissance').value; // AAAA-MM-JJ → jj-Mmm-aaaa (format Zoho)
     document.getElementById('f-date-zoho').value = d ? d.slice(8, 10) + '-' + MONTHS[+d.slice(5, 7) - 1] + '-' + d.slice(0, 4) : '';
     [].forEach.call(form.querySelectorAll('[data-show-if][hidden] input, [data-show-if][hidden] textarea'), function (el) { el.value = ''; });
+    // Téléphones : chiffres seulement (et + initial), pour que Zoho les accepte
+    ['f-tel', 'f-c-tel'].forEach(function (id) { var el = document.getElementById(id); el.value = el.value.trim().replace(/(?!^\+)[^\d]/g, ''); });
+    sent = true;
     submit.disabled = true; submit.firstChild.textContent = 'Envoi en cours… ';
     // Après l'envoi à Zoho (dans un cadre invisible), on enchaîne sur le questionnaire de santé
     var params = new URLSearchParams({ prenom: document.getElementById('f-prenom').value.trim(), nom: document.getElementById('f-nom').value.trim(),
@@ -385,6 +404,6 @@
     </div>
   </div>
 </footer>
-<script src="assets/main.js?v=13695e91"></script>
+<script src="assets/main.js?v=00416e6f"></script>
 </body>
 </html>

@@ -25,6 +25,24 @@ else:
     print(f"{data['total'] - data['fails']}/{data['total']} tests interactifs réussis")
     fails += [f["name"] for f in data["failures"]]
 
+# ---------- 1 bis. Contrastes (WCAG AA) ----------
+print("\n=== Contrastes texte / fond (WCAG AA) ===")
+EN_ATTENTE = ["rgb(255, 255, 255) sur rgb(226,147,29)"]  # texte blanc sur boutons orange : décision de marque en attente
+outc = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--allow-file-access-from-files", "--window-size=1300,900",
+                       "--virtual-time-budget=60000", "--dump-dom", (ROOT / "_source/tests/contrast.html").as_uri()],
+                      capture_output=True, text=True, timeout=300).stdout
+mc = re.search(r'<pre id="out">(.*?)</pre>', outc, re.S)
+cdata = json.loads(H.unescape(mc.group(1))) if mc and mc.group(1).strip().startswith("{") else None
+if cdata is None:
+    check("mesure des contrastes", False, "pas de résultat")
+else:
+    for k, v in sorted(cdata.items(), key=lambda x: float(x[1]["ratio"])):
+        if any(e in k for e in EN_ATTENTE):
+            print(f"À DÉCIDER  {v['ratio']}/{v['need']}  {k}  « {v['ex']} »")
+        else:
+            check(f"contraste suffisant : {k} « {v['ex']} »", False, f"{v['ratio']} < {v['need']} sur {', '.join(v['pages'][:3])}")
+    if not [k for k in cdata if not any(e in k for e in EN_ATTENTE)]: print("OK  tous les textes ont un contraste suffisant (hors décision en attente)")
+
 # ---------- 2. Erreurs JavaScript ----------
 print("\n=== Erreurs JavaScript (console) ===")
 for p in PAGES:
@@ -41,7 +59,8 @@ for p in PAGES:
     # liens vers des fichiers locaux
     for href in set(re.findall(r'(?:href|src)="([^"#:?]+)', t)):
         if href and not href.startswith(("http", "mailto", "tel", "//")):
-            check(f"[{p}] fichier lié existe : {href}", (ROOT / href).exists())
+            local = href[len("/transemondes/"):] if href.startswith("/transemondes/") else href
+            check(f"[{p}] fichier lié existe : {href}", (ROOT / (local or "index.html")).exists())
     # ancres vers d'autres pages
     for page, anchor in set(re.findall(r'href="([a-z0-9-]+\.html)#([^"]+)"', t)):
         target = (ROOT / page).read_text(encoding="utf-8")

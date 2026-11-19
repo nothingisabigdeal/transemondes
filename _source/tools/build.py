@@ -18,7 +18,15 @@ HEAD = """<!doctype html>
 <title>{title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="{desc}">
-<link rel="icon" href="assets/img/3-2.png">
+<link rel="icon" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Transemondes">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:image" content="https://nothingisabigdeal.github.io/transemondes/assets/img/og-image.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
@@ -30,8 +38,8 @@ HEAD = """<!doctype html>
 
 HEADER = f"""<header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Transemondes, accueil">
-      <img src="assets/img/3-2.png" alt="" width="40" height="40">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo-128.png" alt="" width="40" height="40">
       <span><span class="brand__name">Transemondes</span><span class="brand__sub">Respiration holotropique · Yoga Transe</span></span>
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav"><span>Menu</span></button>
@@ -124,6 +132,8 @@ META = {
                   "#formulaire", "Me pré-inscrire"),
   "questionnaire-sante": ("Questionnaire de santé", "Questionnaire de santé confidentiel avant une journée ou un stage de Respiration Holotropique.", "rh",
                   "preinscription.html", "Me pré-inscrire"),
+  "404": ("Page introuvable", "Cette page n'existe pas ou a été déplacée.", "",
+                  "preinscription.html", "Me pré-inscrire"),
   "qui-suis-je": ("Marina Charpentier", "Psychopraticienne transpersonnelle, facilitatrice en Respiration Holotropique.", "qui",
                   "preinscription.html", "Me pré-inscrire"),
 }
@@ -134,7 +144,10 @@ CSS_V, JS_V = _v("assets/style.css"), _v("assets/main.js")
 
 for name, (title, desc, page, cta, cta_label) in META.items():
     body = (PAGES / f"{name}.html").read_text(encoding="utf-8").replace("{{ARROW}}", ARROW)
-    html = HEAD.format(title=title, desc=desc, page=page, css_v=CSS_V) + HEADER.replace("{cta}", cta).replace("{cta_target}", ' target="_blank" rel="noopener"' if cta.startswith("http") else "").replace("{cta_label}", cta_label) + body + FOOTER.replace("__JSV__", JS_V)
+    head = HEAD
+    if name == "404":  # servie à n'importe quelle adresse : chemins rendus absolus (à adapter si le site change de domaine)
+        head = head.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/transemondes/">\n<meta name="robots" content="noindex">', 1)
+    html = head.format(title=title, desc=desc, page=page, css_v=CSS_V) + HEADER.replace("{cta}", cta).replace("{cta_target}", ' target="_blank" rel="noopener"' if cta.startswith("http") else "").replace("{cta_label}", cta_label) + body + FOOTER.replace("__JSV__", JS_V)
     (OUT / f"{name}.html").write_text(html, encoding="utf-8")
     print("écrit", name)
 

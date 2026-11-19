@@ -348,6 +348,12 @@
     var f = e.target.closest('.rf-field'); if (f) f.classList.remove('is-invalid');
   });
   next.addEventListener('click', function () { if (validate(pages[cur])) show(cur + 1); });
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < pages.length - 1) { e.preventDefault(); next.click(); }
+  });
+  var dirty = false, sent = false;
+  form.addEventListener('change', function () { dirty = true; });
+  window.addEventListener('beforeunload', function (e) { if (dirty && !sent) { e.preventDefault(); e.returnValue = ''; } });
   back.addEventListener('click', function () { show(cur - 1); });
   steps.forEach(function (s, k) { s.addEventListener('click', function () {
     if (k < cur) return show(k);
@@ -358,6 +364,7 @@
     e.preventDefault();
     for (var i = 0; i < pages.length; i++) { if (!validate(pages[i])) { show(i); validate(pages[i]); return; } }
     // À brancher plus tard : envoi des réponses (Zoho ou autre). Rien n'est transmis ni enregistré pour l'instant.
+    sent = true;
     form.hidden = true; document.querySelector('.demo-note').hidden = true;
     var done = document.getElementById('qs-done'); done.hidden = false; done.focus();
     window.scrollTo({ top: done.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });

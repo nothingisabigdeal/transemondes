@@ -6,8 +6,8 @@
 <script>
 /* Batterie de tests interactifs. Ouvrir via run_tests.py (Chrome headless). Aucun envoi réel vers Zoho. */
 const ROOT = '../../';
-const PAGES = ['index','breathwork','retraite','qui-suis-je','preinscription','questionnaire-sante','versions','version-1','version-2','version-3','version-4','version-5','version-6'];
-const WIDTHS = [320, 360, 390, 414, 768, 1000, 1024, 1280, 1440];
+const PAGES = ['index','breathwork','retraite','qui-suis-je','preinscription','questionnaire-sante','404','versions','version-1','version-2','version-3','version-4','version-5','version-6'];
+const WIDTHS = [320, 360, 390, 414, 667, 768, 844, 1000, 1024, 1280, 1440]; // 667 et 844 = téléphones en paysage
 const R = []; const ok = (name, pass, info) => R.push({ name, pass: !!pass, info: info || '' });
 const wait = ms => new Promise(r => setTimeout(r, ms));
 function load(page, w, h) {
@@ -29,7 +29,7 @@ async function run() {
     for (const w of WIDTHS) {
       const f = await load(p + '.html', w); const d = f.contentDocument;
       const sw = d.documentElement.scrollWidth; ok(`[${p} @${w}] pas de débordement horizontal`, sw <= w, 'scrollWidth=' + sw);
-      if (w === 390 || w === 1280) {
+      if ((w === 390 || w === 1280) && p !== '404') { // la 404 utilise des adresses du serveur (/transemondes/), testée en ligne
         await wait(300);
         const broken = [...d.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.getAttribute('src'));
         ok(`[${p} @${w}] toutes les images se chargent`, broken.length === 0, broken.join(', '));
@@ -171,6 +171,51 @@ async function run() {
   // 8. Variante 4 : prochaine date calculée
   { const f = await load('version-4.html', 1280); const d = f.contentDocument; const n = d.querySelector('[data-f=n]').textContent;
     ok('[version-4] prochaine date affichée', /^\d+$/.test(n), n); }
+
+
+  // 9. Ancres : la section visée n'est pas cachée sous l'en-tête collant
+  for (const [p, a] of [['index', 'journees'], ['index', 'inscription'], ['retraite', 'temoignages'], ['breathwork', 'inscription_atelier_yt']]) {
+    for (const w of [390, 1280]) {
+      const f = await load(p + '.html', w); const d = f.contentDocument, win = f.contentWindow;
+      d.getElementById(a).scrollIntoView(); await wait(80);
+      const hb = d.querySelector('.site-header').getBoundingClientRect().bottom, t = d.getElementById(a).getBoundingClientRect().top;
+      ok(`[${p}#${a} @${w}] section non masquée par l'en-tête`, t >= hb - 1, `haut section=${Math.round(t)} bas en-tête=${Math.round(hb)}`);
+    }
+  }
+  // 10. Dates cliquables → pré-inscription ; dates passées non cliquables
+  { const f = await load('index.html', 390); const d = f.contentDocument;
+    const live = [...d.querySelectorAll('.date:not(.is-past) .date__link')], pastLinks = d.querySelectorAll('.is-past a');
+    ok('[index] dates à venir cliquables vers la pré-inscription', live.length > 0 && live.every(a => /preinscription\.html\?date=\d{4}-\d\d-\d\d/.test(a.getAttribute('href'))), live.length + ' liens');
+    ok('[index] dates passées non cliquables', pastLinks.length === 0, pastLinks.length + ' liens restants');
+    live[0].closest('.date').scrollIntoView({ block: 'center' }); await wait(50);
+    const a = live[0], b = a.closest('.date').getBoundingClientRect(), hit = d.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+    ok('[index] toute la carte de date est cliquable', hit === a, hit ? hit.tagName + '.' + hit.className : 'null');
+    const chip = d.querySelector('.chips li:not(.is-past) a'); ok('[index] pastilles de date cliquables', !!chip && chip.getAttribute('href').includes('?date=')); }
+  // 11. Menu mobile : Échap le referme
+  { const f = await load('index.html', 390); const d = f.contentDocument; d.querySelector('.menu-toggle').click(); await wait(80);
+    d.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); await wait(80);
+    ok('[index @390] Échap referme le menu mobile', !d.querySelector('.site-header').classList.contains('is-open')); }
+  // 12. Formulaires : Entrée = étape suivante (pas d'envoi), téléphones nettoyés
+  { const f = await load('preinscription.html?date=2027-01-24', 390, 900); const d = f.contentDocument, $ = s => d.querySelector(s);
+    $('#f-nom').value = 'Test'; $('#f-email').value = 'test@exemple.fr'; $('#f-tel').value = '06 12.34-56 78';
+    $('#f-nom').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })); await wait(80);
+    ok('[préinscription] Entrée passe à l\'étape suivante sans envoyer', !d.querySelectorAll('.rf-page')[1].hidden && !$('#rf-submit').disabled);
+    $('#f-c-prenom').value = 'A'; $('#f-c-nom').value = 'B'; $('#f-c-tel').value = '+33 6 11 11 11 11'; $('#rf-next').click(); await wait(50);
+    d.querySelector('input[name=Radio2]').click(); d.querySelector('input[name=Radio5]').click(); $('#rf-next').click(); await wait(50);
+    $('#rf').action = 'about:blank'; $('#rf-submit').click(); await wait(50);
+    ok('[préinscription] téléphone nettoyé avant envoi (chiffres seulement)', $('#f-tel').value === '0612345678' && $('#f-c-tel').value === '+33611111111', $('#f-tel').value + ' / ' + $('#f-c-tel').value); }
+  { const f = await load('questionnaire-sante.html', 390, 900); const d = f.contentDocument;
+    d.querySelector('#q-prenom').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })); await wait(80);
+    ok('[questionnaire] Entrée ne provoque pas d\'envoi', d.querySelector('#qs-done').hidden); }
+  // 13. Accessibilité de base : tableaux avec en-têtes, boutons nommés, langue
+  for (const p of ['index', 'retraite', 'preinscription', 'questionnaire-sante']) {
+    const f = await load(p + '.html', 1280); const d = f.contentDocument;
+    const badT = [...d.querySelectorAll('table')].filter(t => !t.querySelector('th'));
+    ok(`[${p}] chaque tableau a des en-têtes`, badT.length === 0);
+    const unnamed = [...d.querySelectorAll('button, a[href]')].filter(b => !(b.textContent.trim() || b.getAttribute('aria-label') || b.querySelector('img[alt]:not([alt=""])')));
+    ok(`[${p}] chaque bouton/lien a un nom`, unnamed.length === 0, unnamed.map(u => u.outerHTML.slice(0, 60)).join(' | '));
+    ok(`[${p}] langue déclarée (fr)`, d.documentElement.lang === 'fr');
+  }
 
   const fails = R.filter(r => !r.pass);
   document.getElementById('out').textContent = JSON.stringify({ total: R.length, fails: fails.length, failures: fails, all: R.map(r => (r.pass ? 'OK  ' : 'KO  ') + r.name + (r.info ? '  (' + r.info + ')' : '')) });
