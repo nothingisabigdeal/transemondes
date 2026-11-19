@@ -1,15 +1,9 @@
 
-<section class="hero hero--form" id="accueil">
+<section class="hero hero--form hero--compact" id="accueil">
   <div class="wrap">
     <div class="hero__body">
-      <ol class="journey" aria-label="Votre parcours d'inscription">
-        <li class="is-done"><span>1</span>Pré-inscription</li>
-        <li class="is-current"><span>2</span>Questionnaire de santé</li>
-        <li><span>3</span>Entretien &amp; confirmation</li>
-      </ol>
-      <span class="eyebrow">Informations confidentielles</span>
       <h1>Questionnaire de santé <em>Respiration Holotropique</em></h1>
-      <p class="hero__lead">(méthode Grof® Holotropic Breathwork)</p>
+      <p class="hero__lead">(méthode Grof® Holotropic Breathwork) · Informations confidentielles</p>
       <p class="hello" id="hello" hidden></p>
     </div>
   </div>
@@ -321,7 +315,6 @@
   var full = ((q.get('prenom') || '') + ' ' + (q.get('nom') || '')).trim();
   if (full) document.getElementById('q-signnom').value = full;
   if (q.get('prenom')) { var h = document.getElementById('hello'); h.textContent = 'Merci ' + q.get('prenom') + ' pour votre demande d’inscription. Dernière étape : ce questionnaire, nécessaire pour vous accompagner en toute sécurité.'; h.hidden = false; }
-  if (q.get('from') !== 'preinscription') document.querySelector('.journey li').classList.add('is-done');
   var d = new Date(); document.getElementById('q-date').value = d.toLocaleDateString('fr-FR');
 
   var form = document.getElementById('qs'), pages = [].slice.call(form.querySelectorAll('.rf-page')),
@@ -366,8 +359,6 @@
     // À brancher plus tard : envoi des réponses (Zoho ou autre). Rien n'est transmis ni enregistré pour l'instant.
     form.hidden = true; document.querySelector('.demo-note').hidden = true;
     var done = document.getElementById('qs-done'); done.hidden = false; done.focus();
-    document.querySelector('.journey li.is-current').classList.replace('is-current', 'is-done');
-    document.querySelector('.journey li:last-child').classList.add('is-current');
     window.scrollTo({ top: done.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
   });
 })();

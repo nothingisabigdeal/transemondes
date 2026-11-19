@@ -762,3 +762,4 @@ a[href^="mailto:"] { overflow-wrap: anywhere; }
 .hero--compact .wrap { max-width: var(--wrap); }
 .hero--compact .hero__lead { max-width: 70ch; }
 .hero--compact + .section { padding-top: 8px !important; }
+.hero--compact .hello { margin-top: 14px; padding: 10px 14px; font-size: .95rem; }
