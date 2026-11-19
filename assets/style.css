@@ -482,3 +482,78 @@ a[href^="mailto:"] { overflow-wrap: anywhere; }
 .hero-dates--light .hero-dates__more { color: var(--orange-deep); }
 .hero-dates--light .hero-dates__more:hover { color: var(--blue); }
 @media (max-width: 620px) { .hero-dates--light .hero-dates__col + .hero-dates__col { border-top-color: #EADCC4; } }
+
+/* ---------- Liens communs des variantes ---------- */
+.dates-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.dates-links a { display: inline-flex; align-items: center; gap: 8px; font-size: .88rem; font-weight: 600; color: var(--orange-deep); text-decoration: none; }
+.dates-links a:hover { color: var(--blue); }
+.dates-links svg { width: 14px; height: 14px; transition: transform .2s; }
+.dates-links a:hover svg { transform: translateX(3px); }
+
+/* ---------- Version 4 : prochaine date en grand ---------- */
+.next-up {
+  margin-top: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); overflow: hidden;
+}
+.next-up__main { padding: 26px; display: grid; gap: 14px; align-content: start; background: linear-gradient(160deg, var(--orange-soft), #FFFFFF 75%); }
+.next-up__label { font-family: var(--f-display); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange-ink); line-height: 1.45; }
+.next-up__date { display: flex; align-items: center; gap: 14px; }
+.next-up__num { font-family: var(--f-display); font-size: 4.2rem; font-weight: 700; line-height: .9; letter-spacing: -.05em; color: var(--orange); font-variant-numeric: tabular-nums; }
+.next-up__txt { display: grid; line-height: 1.25; }
+.next-up__txt span { font-family: var(--f-display); font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.next-up__txt b { font-family: var(--f-display); font-size: 1.3rem; font-weight: 700; color: var(--ink-strong); }
+.next-up__where { display: flex; flex-wrap: wrap; gap: 6px; }
+.next-up__where span { padding: 4px 11px; border-radius: 999px; font-size: .78rem; font-weight: 600; background: #FFFFFF; border: 1px solid var(--line); color: var(--blue); }
+.next-up__side { padding: 26px; display: grid; gap: 18px; align-content: start; border-left: 1px solid var(--line); }
+.next-up__small { display: block; font-family: var(--f-display); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.mini-dates { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.mini-dates li { padding: 4px 10px; border-radius: 8px; background: var(--tint); border: 1px solid #F3E6D1; font-size: .84rem; font-weight: 600; color: var(--ink-strong); white-space: nowrap; }
+.next-up__stage { display: grid; line-height: 1.4; }
+.next-up__stage b { font-size: .95rem; }
+.next-up__stage span { font-family: var(--f-display); font-weight: 700; color: var(--orange-deep); }
+.next-up .dates-links { flex-direction: column; gap: 6px; }
+@media (max-width: 620px) {
+  .next-up { grid-template-columns: 1fr; }
+  .next-up__side { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* ---------- Version 5 : frise horizontale ---------- */
+.frise { margin-top: 32px; display: grid; gap: 14px; min-width: 0; }
+.frise__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.frise__title { font-family: var(--f-display); font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.frise__legend { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--muted); }
+.frise__legend i { display: inline-block; margin-left: 8px; }
+.lg-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--blue); }
+.lg-bar { width: 22px; height: 8px; border-radius: 4px; background: var(--orange); }
+.frise__track {
+  list-style: none; display: flex; overflow-x: auto; scroll-snap-type: x proximity; padding: 4px 0 14px; position: relative;
+  -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent);
+  scrollbar-width: thin;
+}
+.frise__item {
+  flex: 0 0 112px; scroll-snap-align: start; display: grid; grid-template-rows: 16px auto 22px auto; justify-items: center;
+  text-align: center; gap: 4px; position: relative; font-variant-numeric: tabular-nums;
+}
+.frise__item::before { content: ""; position: absolute; left: 0; right: 0; top: calc(16px + 4px + 1.5em + 4px + 10px); height: 2px; background: var(--line); }
+.frise__item:first-child::before { left: 50%; }
+.frise__item:last-child::before { right: 50%; }
+.frise__year { font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--muted); }
+.frise__when { font-family: var(--f-display); font-weight: 700; font-size: 1rem; color: var(--ink-strong); white-space: nowrap; line-height: 1.5; }
+.frise__mark { align-self: center; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px #FFFFFF, 0 0 0 5px var(--line); position: relative; z-index: 1; }
+.frise__item--stage .frise__mark { width: 40px; height: 12px; border-radius: 6px; background: var(--orange); }
+.frise__item--stage .frise__when { color: var(--orange-deep); font-size: .86rem; }
+.frise__what { font-size: .76rem; line-height: 1.35; color: var(--muted); padding-inline: 6px; }
+.frise__item--stage .frise__what { color: var(--ink-strong); font-weight: 600; }
+.frise__item.is-past { opacity: .4; }
+.frise__item.is-past .frise__when { text-decoration: line-through; }
+
+/* ---------- Version 6 : cartes blanches + pastilles ---------- */
+.next--chips .next__card { gap: 12px; }
+.next--chips .chips { gap: 6px; }
+.next--chips .chips li { min-width: 56px; background: var(--tint); border: 1px solid #F3E6D1; }
+.next--chips .chips b { font-size: 1.2rem; }
+.next--chips .chips li.is-past { background: transparent; border-style: dashed; }
+.next--chips .chips li.is-past b, .next--chips .chips li.is-past span { color: var(--muted); }
+.next--chips .stage-list li { background: var(--tint); }
+.next--chips .stage-list span { color: var(--muted); }
+.next--chips .stage-list b { color: var(--ink-strong); font-size: .98rem; }
