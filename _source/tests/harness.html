@@ -241,6 +241,15 @@ async function run() {
     ok(`[${p}] aucune photo collée à l'écran au défilement`, stuck.length === 0, stuck.length + ' photo(s)');
   }
 
+  // 16. Sections texte + photo : le haut de la photo est aligné avec le haut du texte (petite ligne orange)
+  for (const [p, sel] of [['index', '#Definition'], ['index', '#Pourquoi-faire-de-la-RH'], ['index', '#journees'], ['breathwork', '#atelier_definition'], ['retraite', '#programme']]) {
+    const f = await load(p + '.html', 1280); const d = f.contentDocument;
+    const sec = d.querySelector(sel), split = sec.querySelector('.split'), cols = [...split.children];
+    const img = cols.map(c => c.querySelector('.media') || (c.classList.contains('media') ? c : null)).find(Boolean), txt = cols.find(c => c.querySelector('.eyebrow'));
+    if (img && txt) { const dt = Math.abs(img.getBoundingClientRect().top - txt.querySelector('.eyebrow').getBoundingClientRect().top);
+      ok(`[${p} ${sel}] photo alignée en haut avec le texte`, dt <= 24, `écart ${Math.round(dt)} px`); }
+  }
+
   const fails = R.filter(r => !r.pass);
   document.getElementById('out').textContent = JSON.stringify({ total: R.length, fails: fails.length, failures: fails, all: R.map(r => (r.pass ? 'OK  ' : 'KO  ') + r.name + (r.info ? '  (' + r.info + ')' : '')) });
 }
