@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Questionnaire de santé</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Questionnaire de santé confidentiel avant une journée ou un stage de Respiration Holotropique.">
+<link rel="icon" href="assets/img/3-2.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css?v=534aa29b">
+</head>
+<body data-page="rh">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Transemondes, accueil">
+      <img src="assets/img/3-2.png" alt="" width="40" height="40">
+      <span><span class="brand__name">Transemondes</span><span class="brand__sub">Respiration holotropique · Yoga Transe</span></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav"><span>Menu</span></button>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <div class="nav__item" data-section="rh">
+        <a class="nav__link" href="index.html">Respiration holotropique <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+        <div class="nav__menu">
+          <a href="index.html#Definition">Qu'est-ce que la RH ?</a>
+          <a href="index.html#Pourquoi-faire-de-la-RH">Pourquoi faire de la RH ?</a>
+          <a href="index.html#journees">Journées de RH à Paris</a>
+          <a href="index.html#Stages">Stages de RH</a>
+          <a href="index.html#inscription">Inscription</a>
+        </div>
+      </div>
+      <div class="nav__item" data-section="breathwork retraite">
+        <button class="nav__link" type="button">Yoga Transe <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+        <div class="nav__menu">
+          <a class="nav__group" href="breathwork.html">Ateliers Breathwork YT</a>
+          <a class="nav__sub" href="breathwork.html#atelier_definition">Qu'est-ce qu'un atelier Yoga Transe ?</a>
+          <a class="nav__sub" href="breathwork.html#inscription_atelier_yt">Inscription</a>
+          <a class="nav__group" href="retraite.html">Retraites YT</a>
+          <a class="nav__sub" href="retraite.html#programme">Programme</a>
+          <a class="nav__sub" href="retraite.html#participer">Participer</a>
+          <a class="nav__sub" href="retraite.html#temoignages">Témoignages</a>
+          <a class="nav__sub" href="retraite.html#inscription">Inscription</a>
+          <a class="nav__sub" href="retraite.html#a_propos">Contact</a>
+        </div>
+      </div>
+      <div class="nav__item" data-section="qui">
+        <a class="nav__link" href="qui-suis-je.html">Qui suis-je ? <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+        <div class="nav__menu">
+          <a href="qui-suis-je.html#mots_sur_moi">Quelques mots sur moi</a>
+        </div>
+      </div>
+      <a class="btn btn--primary btn--sm nav-cta" href="preinscription.html">Me pré-inscrire</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+
+<section class="hero hero--form" id="accueil">
+  <div class="wrap">
+    <div class="hero__body">
+      <ol class="journey" aria-label="Votre parcours d'inscription">
+        <li class="is-done"><span>1</span>Pré-inscription</li>
+        <li class="is-current"><span>2</span>Questionnaire de santé</li>
+        <li><span>3</span>Entretien &amp; confirmation</li>
+      </ol>
+      <span class="eyebrow">Informations confidentielles</span>
+      <h1>Questionnaire de santé <em>Respiration Holotropique</em></h1>
+      <p class="hero__lead">(méthode Grof® Holotropic Breathwork)</p>
+      <p class="hello" id="hello" hidden></p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--surface" id="questionnaire" style="padding-top:clamp(32px,5vw,56px)">
+  <div class="wrap form-layout">
+    <div style="display:grid;gap:20px;min-width:0">
+      <p class="demo-note" role="note"><b>Version de démonstration.</b> Ce questionnaire n'est pas encore relié : les réponses ne sont envoyées à personne et ne sont pas enregistrées.</p>
+
+      <form class="rf" id="qs" novalidate>
+        <ol class="rf-steps" aria-label="Étapes du questionnaire">
+          <li class="is-current"><span>1</span>Santé physique</li>
+          <li><span>2</span>Santé psychique</li>
+          <li><span>3</span>Autres informations</li>
+          <li><span>4</span>Déclaration</li>
+        </ol>
+
+        <!-- ÉTAPE 1 -->
+        <fieldset class="rf-page" data-step="1">
+          <legend>1. Antécédents médicaux et points de vigilance physique</legend>
+          <div class="qs-intro">
+            <p>La Respiration Holotropique (RH), pratiquée conformément à la méthode Grof® Holotropic Breathwork, peut impliquer des expériences intenses accompagnées d'une forte libération émotionnelle et physique. La pratique de la RH n'est pas appropriée pour les femmes enceintes, ni pour les personnes souffrant notamment de problèmes cardiovasculaires (crise cardiaque, chirurgie cardiovasculaire, hypertension sévère, artériosclérose, angine de poitrine ou arythmie), de certains troubles psychiatriques diagnostiqués, d'une chirurgie ou d'une fracture récente, d'une maladie infectieuse aiguë, d'une épilepsie grand-mal ou d'une crise d'émergence spirituelle en cours.</p>
+            <details>
+              <summary>Lire la suite</summary>
+              <p>Cette liste n’est pas exhaustive. Si vous avez le moindre doute, il est essentiel que vous consultiez votre médecin ou votre thérapeute ainsi que les organisateurs du stage avant d'y assister. Les réponses aux questions qui suivent sont destinées à permettre un accompagnement dans les meilleures conditions de sécurité et resteront strictement confidentielles.</p>
+              <p>Veuillez répondre à toutes les questions de la manière la plus complète possible, en ajoutant des informations supplémentaires à la fin du formulaire en cas de réponse positive. Si vous pensez qu’une information concernant votre état physique, émotionnel ou psychique peut être pertinente, même si elle n’est pas explicitement demandée dans ce questionnaire, merci de l’ajouter dans l’espace prévu à cet effet.</p>
+            </details>
+          </div>
+
+          <div class="rf-group">
+            <span class="rf-group__label">Vos coordonnées</span>
+            <div class="rf-row">
+              <div class="rf-field"><label for="q-prenom">Prénom <b class="req">*</b></label><input id="q-prenom" name="prenom" required autocomplete="given-name"></div>
+              <div class="rf-field"><label for="q-nom">Nom de famille <b class="req">*</b></label><input id="q-nom" name="nom" required autocomplete="family-name"></div>
+            </div>
+            <div class="rf-row">
+              <div class="rf-field"><label for="q-email">E-mail <b class="req">*</b></label><input id="q-email" name="email" type="email" required autocomplete="email"></div>
+              <div class="rf-field"><label for="q-stage">Journée ou stage</label><input id="q-stage" name="stage"></div>
+            </div>
+          </div>
+
+          <p class="rf-label">Avez-vous des antécédents, avez-vous été diagnostiqué ou êtes-vous actuellement confronté.e à l’une des situations suivantes ?</p>
+          <div class="yn-list"><div class="yn rf-field" data-yn="q_cardio">
+            <span class="yn__q" id="l-q_cardio">Maladie cardiovasculaire, crise cardiaque, artériosclérose, chirurgie cardiovasculaire, angine de poitrine, anévrisme ou arythmie</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_cardio" data-required-group="q_cardio">
+              <label class="pill"><input type="radio" name="q_cardio" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_cardio" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_cardio_details">Précisions</label><input id="q_cardio_details" name="q_cardio_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_hypertension">
+            <span class="yn__q" id="l-q_hypertension">Hypertension artérielle</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_hypertension" data-required-group="q_hypertension">
+              <label class="pill"><input type="radio" name="q_hypertension" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_hypertension" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_hypertension_details">Précisions</label><input id="q_hypertension_details" name="q_hypertension_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_avc">
+            <span class="yn__q" id="l-q_avc">Accident vasculaire cérébral (AVC), accident ischémique transitoire ou autre trouble cérébral ou neurologique</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_avc" data-required-group="q_avc">
+              <label class="pill"><input type="radio" name="q_avc" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_avc" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_avc_details">Précisions</label><input id="q_avc_details" name="q_avc_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_epilepsie">
+            <span class="yn__q" id="l-q_epilepsie">Épilepsie, notamment crise convulsive généralisée dite « grand mal »</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_epilepsie" data-required-group="q_epilepsie">
+              <label class="pill"><input type="radio" name="q_epilepsie" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_epilepsie" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_epilepsie_details">Précisions</label><input id="q_epilepsie_details" name="q_epilepsie_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_chirurgie">
+            <span class="yn__q" id="l-q_chirurgie">Chirurgie récente</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_chirurgie" data-required-group="q_chirurgie">
+              <label class="pill"><input type="radio" name="q_chirurgie" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_chirurgie" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_chirurgie_details">Précisions</label><input id="q_chirurgie_details" name="q_chirurgie_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_blessure">
+            <span class="yn__q" id="l-q_blessure">Blessure physique passée ou récente, fracture ou luxation</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_blessure" data-required-group="q_blessure">
+              <label class="pill"><input type="radio" name="q_blessure" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_blessure" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_blessure_details">Précisions</label><input id="q_blessure_details" name="q_blessure_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_infection">
+            <span class="yn__q" id="l-q_infection">Maladie infectieuse ou transmissible actuelle</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_infection" data-required-group="q_infection">
+              <label class="pill"><input type="radio" name="q_infection" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_infection" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_infection_details">Précisions</label><input id="q_infection_details" name="q_infection_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_glaucome">
+            <span class="yn__q" id="l-q_glaucome">Glaucome</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_glaucome" data-required-group="q_glaucome">
+              <label class="pill"><input type="radio" name="q_glaucome" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_glaucome" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_glaucome_details">Précisions</label><input id="q_glaucome_details" name="q_glaucome_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_retine">
+            <span class="yn__q" id="l-q_retine">Décollement de la rétine</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_retine" data-required-group="q_retine">
+              <label class="pill"><input type="radio" name="q_retine" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_retine" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_retine_details">Précisions</label><input id="q_retine_details" name="q_retine_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_osteoporose">
+            <span class="yn__q" id="l-q_osteoporose">Ostéoporose, en particulier avec fractures</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_osteoporose" data-required-group="q_osteoporose">
+              <label class="pill"><input type="radio" name="q_osteoporose" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_osteoporose" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_osteoporose_details">Précisions</label><input id="q_osteoporose_details" name="q_osteoporose_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_asthme">
+            <span class="yn__q" id="l-q_asthme">Asthme sévère*</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_asthme" data-required-group="q_asthme">
+              <label class="pill"><input type="radio" name="q_asthme" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_asthme" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_asthme_details">Précisions</label><input id="q_asthme_details" name="q_asthme_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_respiratoire">
+            <span class="yn__q" id="l-q_respiratoire">Maladie respiratoire autre que l&#x27;asthme</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_respiratoire" data-required-group="q_respiratoire">
+              <label class="pill"><input type="radio" name="q_respiratoire" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_respiratoire" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_respiratoire_details">Précisions</label><input id="q_respiratoire_details" name="q_respiratoire_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_autre_medical">
+            <span class="yn__q" id="l-q_autre_medical">Autre problème médical ou physique non mentionné ci-dessus</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_autre_medical" data-required-group="q_autre_medical">
+              <label class="pill"><input type="radio" name="q_autre_medical" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_autre_medical" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_autre_medical_details">Précisions</label><input id="q_autre_medical_details" name="q_autre_medical_details" maxlength="500"></div>
+          </div></div>
+          <p class="rf-help">* En cas d'asthme non sévère, si votre participation est confirmée, merci d'apporter votre inhalateur ou traitement habituel le jour de la séance.</p>
+          <div class="rf-field"><label for="q_autres_physique">Autres précisions éventuelles concernant vos réponses positives :</label><textarea id="q_autres_physique" name="q_autres_physique" rows="3"></textarea></div>
+          <div class="yn yn--q rf-field" data-yn="q_sac">
+            <span class="yn__q" id="l-q_sac">Êtes-vous capable de porter un sac de courses en montant un étage sans avoir à faire une pause ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_sac" data-required-group="q_sac">
+              <label class="pill"><input type="radio" name="q_sac" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_sac" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Non" hidden><label for="q_sac_details">Si non, précisez :</label><textarea id="q_sac_details" name="q_sac_details" rows="2"></textarea></div>
+          </div><div class="yn yn--q rf-field" data-yn="q_respiration_effort">
+            <span class="yn__q" id="l-q_respiration_effort">Éprouvez-vous une difficulté à respirer ou une pression thoracique lors d&#x27;un exercice physique ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_respiration_effort" data-required-group="q_respiration_effort">
+              <label class="pill"><input type="radio" name="q_respiration_effort" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_respiration_effort" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_respiration_effort_details">Si oui, précisez :</label><textarea id="q_respiration_effort_details" name="q_respiration_effort_details" rows="2"></textarea></div>
+          </div><div class="yn yn--q rf-field" data-yn="q_medicaments">
+            <span class="yn__q" id="l-q_medicaments">Prenez-vous des médicaments, quels qu’ils soient ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_medicaments" data-required-group="q_medicaments">
+              <label class="pill"><input type="radio" name="q_medicaments" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_medicaments" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_medicaments_details">Si oui, veuillez les énumérer :</label><textarea id="q_medicaments_details" name="q_medicaments_details" rows="2"></textarea></div>
+          </div>
+        </fieldset>
+
+        <!-- ÉTAPE 2 -->
+        <fieldset class="rf-page" data-step="2" hidden>
+          <legend>2. Santé psychique et accompagnements</legend>
+          <p class="rf-label">Avez-vous actuellement, ou avez-vous déjà présenté, l'une des situations suivantes ?</p>
+          <div class="yn-list"><div class="yn rf-field" data-yn="q_psy_diag">
+            <span class="yn__q" id="l-q_psy_diag">Maladie ou trouble psychiatrique ou psychologique diagnostiqué et traitement éventuel</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_psy_diag" data-required-group="q_psy_diag">
+              <label class="pill"><input type="radio" name="q_psy_diag" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_psy_diag" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_psy_diag_details">Précisions</label><input id="q_psy_diag_details" name="q_psy_diag_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_psy_difficulte">
+            <span class="yn__q" id="l-q_psy_difficulte">Difficulté psychiatrique ou psychologique</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_psy_difficulte" data-required-group="q_psy_difficulte">
+              <label class="pill"><input type="radio" name="q_psy_difficulte" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_psy_difficulte" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_psy_difficulte_details">Précisions</label><input id="q_psy_difficulte_details" name="q_psy_difficulte_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_psychotique">
+            <span class="yn__q" id="l-q_psychotique">Épisode psychotique</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_psychotique" data-required-group="q_psychotique">
+              <label class="pill"><input type="radio" name="q_psychotique" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_psychotique" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_psychotique_details">Précisions</label><input id="q_psychotique_details" name="q_psychotique_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_paranoia">
+            <span class="yn__q" id="l-q_paranoia">Peur importante ou paranoïa</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_paranoia" data-required-group="q_paranoia">
+              <label class="pill"><input type="radio" name="q_paranoia" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_paranoia" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_paranoia_details">Précisions</label><input id="q_paranoia_details" name="q_paranoia_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_suicidaire">
+            <span class="yn__q" id="l-q_suicidaire">Idées ou comportement suicidaire</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_suicidaire" data-required-group="q_suicidaire">
+              <label class="pill"><input type="radio" name="q_suicidaire" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_suicidaire" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_suicidaire_details">Précisions</label><input id="q_suicidaire_details" name="q_suicidaire_details" maxlength="500"></div>
+          </div><div class="yn rf-field" data-yn="q_hospitalisation">
+            <span class="yn__q" id="l-q_hospitalisation">Hospitalisation pour raisons psychiatriques ou psychologiques</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_hospitalisation" data-required-group="q_hospitalisation">
+              <label class="pill"><input type="radio" name="q_hospitalisation" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_hospitalisation" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_hospitalisation_details">Précisions</label><input id="q_hospitalisation_details" name="q_hospitalisation_details" maxlength="500"></div>
+          </div></div>
+          <div class="rf-field"><label for="q_autres_psy">Autres précisions éventuelles, événements associés et dates concernant vos réponses positives :</label><textarea id="q_autres_psy" name="q_autres_psy" rows="3"></textarea></div>
+          <div class="yn yn--q rf-field" data-yn="q_therapie">
+            <span class="yn__q" id="l-q_therapie">Suivez-vous actuellement une thérapie ou consultez-vous un psychiatre, psychologue, psychopraticien, thérapeute, conseiller psychologique, ou participez-vous à un groupe de soutien ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_therapie" data-required-group="q_therapie">
+              <label class="pill"><input type="radio" name="q_therapie" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_therapie" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_therapie_details">Si oui, précisez le(s) type(s) d'accompagnement et leur fréquence :</label><textarea id="q_therapie_details" name="q_therapie_details" rows="2"></textarea></div>
+          </div>
+        </fieldset>
+
+        <!-- ÉTAPE 3 -->
+        <fieldset class="rf-page" data-step="3" hidden>
+          <legend>3. Autres informations</legend>
+          <div class="yn yn--q rf-field" data-yn="q_enceinte">
+            <span class="yn__q" id="l-q_enceinte">Êtes-vous actuellement enceinte, ou existe-t-il une possibilité que vous le soyez ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_enceinte" data-required-group="q_enceinte">
+              <label class="pill"><input type="radio" name="q_enceinte" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_enceinte" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_enceinte_details">Si oui, précisez :</label><textarea id="q_enceinte_details" name="q_enceinte_details" rows="2"></textarea></div>
+          </div><div class="yn yn--q rf-field" data-yn="q_rh_deja">
+            <span class="yn__q" id="l-q_rh_deja">Avez-vous déjà fait de la respiration holotropique ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_rh_deja" data-required-group="q_rh_deja">
+              <label class="pill"><input type="radio" name="q_rh_deja" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_rh_deja" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_rh_deja_details">Si oui, dans quelles conditions et avec qui :</label><textarea id="q_rh_deja_details" name="q_rh_deja_details" rows="2"></textarea></div>
+          </div><div class="yn yn--q rf-field" data-yn="q_experience_intense">
+            <span class="yn__q" id="l-q_experience_intense">Avez-vous déjà vécu une expérience spirituelle, énergétique ou de conscience élargie très intense difficile à intégrer ? Ou qui aurait eu des répercussions invalidantes ou fortement déstabilisantes dans votre quotidien ?</span>
+            <div class="yn__opts" role="radiogroup" aria-labelledby="l-q_experience_intense" data-required-group="q_experience_intense">
+              <label class="pill"><input type="radio" name="q_experience_intense" value="Non"><span>Non</span></label>
+              <label class="pill"><input type="radio" name="q_experience_intense" value="Oui"><span>Oui</span></label>
+            </div>
+            <div class="yn__det" data-when="Oui" hidden><label for="q_experience_intense_details">Si oui, précisez :</label><textarea id="q_experience_intense_details" name="q_experience_intense_details" rows="2"></textarea></div>
+          </div>
+        </fieldset>
+
+        <!-- ÉTAPE 4 -->
+        <fieldset class="rf-page" data-step="4" hidden>
+          <legend>4. Informations complémentaires et déclaration</legend>
+          <div class="rf-field"><label for="q_infos">Merci de partager ici toute autre information que vous souhaitez porter à notre connaissance :</label><textarea id="q_infos" name="q_infos" rows="4"></textarea></div>
+          <div class="declaration">
+            <h3>Déclaration</h3>
+            <p>Je confirme avoir lu et compris les informations ci-dessus, avoir répondu aux questions de manière complète et sincère et n’avoir volontairement omis aucune information. Pour autant que je sache, mon état de santé général est bon. Je comprends que les informations transmises sont nécessaires afin d'apprécier les précautions éventuelles liées à mon accompagnement, et que je dois signaler toute évolution importante de mon état de santé et de mes traitements avant la séance ou le stage de Respiration Holotropique.</p>
+          </div>
+          <div class="rf-field">
+            <div class="choices" data-required-group="declaration">
+              <label class="choice choice--accept"><input type="checkbox" name="declaration" value="Oui"><span>Je confirme la déclaration ci-dessus.</span></label>
+            </div>
+          </div>
+          <div class="rf-row rf-row--3">
+            <div class="rf-field"><label for="q-signnom">Nom et prénom <b class="req">*</b></label><input id="q-signnom" name="signature_nom" required></div>
+            <div class="rf-field"><label for="q-date">Date</label><input id="q-date" name="signature_date" readonly></div>
+            <div class="rf-field"><label for="q-sign">Signature <b class="req">*</b></label><input id="q-sign" name="signature" required placeholder="Tapez votre nom"><span class="rf-help">Tapez votre nom pour signer.</span></div>
+          </div>
+        </fieldset>
+
+        <p class="rf-error" id="qs-error" role="alert" hidden></p>
+        <div class="rf-nav">
+          <button type="button" class="btn btn--ghost" id="qs-back" hidden>Retour</button>
+          <span class="rf-count" id="qs-count">Étape 1 sur 4</span>
+          <button type="button" class="btn btn--primary" id="qs-next">Suivant <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="submit" class="btn btn--primary" id="qs-submit" hidden>Envoyer le questionnaire <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </form>
+
+      <div class="rf qs-done" id="qs-done" hidden tabindex="-1">
+        <span class="eyebrow">Merci</span>
+        <h2 class="h-section" style="margin-top:6px">Votre questionnaire est <em>complet</em></h2>
+        <p class="demo-note"><b>Version de démonstration :</b> rien n'a été envoyé. Une fois le questionnaire relié, Marina recevra vos réponses automatiquement.</p>
+        <p>Pour une première participation, je vous proposerai prochainement un créneau pour l'entretien préalable en visio (environ 40 minutes, offert), en tenant compte des disponibilités indiquées dans votre formulaire. À l’issue de notre entretien, je vous confirmerai votre participation.</p>
+        <p>Si vous avez déjà participé à une journée ou à un stage, merci d’attendre ma confirmation qu’il reste bien une place avant d’effectuer le règlement de l’acompte.</p>
+        <p>Au plaisir d’échanger avec vous et de vous accompagner,<br><b>Marina</b></p>
+        <div class="btn-row"><a class="btn btn--ghost" href="index.html">Retour à l'accueil</a></div>
+      </div>
+    </div>
+
+    <aside class="form-aside">
+      <div class="card">
+        <span class="eyebrow">Confidentialité</span>
+        <p>Les informations transmises restent strictement confidentielles. Elles sont utilisées uniquement dans le cadre de votre participation à un stage et ne sont jamais communiquées à un tiers. Vous pouvez à tout moment demander la modification ou la suppression de vos données par simple email.</p>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Pas le temps maintenant ?</span>
+        <p>Vous pourrez compléter ce questionnaire plus tard grâce au lien reçu par e-mail. Il doit être rempli avant l'entretien préalable.</p>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Une question ?</span>
+        <p><b>Marina Charpentier</b><br>06 24 07 46 46<br><a href="mailto:marina.charpentier@transemondes.com">marina.charpentier<wbr>@transemondes.com</a></p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script>
+(function () {
+  // Lien personnel : questionnaire-sante.html?prenom=…&nom=…&email=…&stage=…
+  var q = new URLSearchParams(location.search), set = function (id, k) { var v = q.get(k); if (v) document.getElementById(id).value = v; };
+  set('q-prenom', 'prenom'); set('q-nom', 'nom'); set('q-email', 'email'); set('q-stage', 'stage');
+  var full = ((q.get('prenom') || '') + ' ' + (q.get('nom') || '')).trim();
+  if (full) document.getElementById('q-signnom').value = full;
+  if (q.get('prenom')) { var h = document.getElementById('hello'); h.textContent = 'Merci ' + q.get('prenom') + ' pour votre demande d’inscription. Dernière étape : ce questionnaire, nécessaire pour vous accompagner en toute sécurité.'; h.hidden = false; }
+  if (q.get('from') !== 'preinscription') document.querySelector('.journey li').classList.add('is-done');
+  var d = new Date(); document.getElementById('q-date').value = d.toLocaleDateString('fr-FR');
+
+  var form = document.getElementById('qs'), pages = [].slice.call(form.querySelectorAll('.rf-page')),
+      steps = [].slice.call(form.querySelectorAll('.rf-steps li')), cur = 0,
+      back = document.getElementById('qs-back'), next = document.getElementById('qs-next'),
+      submit = document.getElementById('qs-submit'), count = document.getElementById('qs-count'), err = document.getElementById('qs-error');
+
+  function show(i) {
+    pages.forEach(function (p, k) { p.hidden = k !== i; });
+    steps.forEach(function (s, k) { s.classList.toggle('is-current', k === i); s.classList.toggle('is-done', k < i); });
+    back.hidden = i === 0; next.hidden = i === pages.length - 1; submit.hidden = i !== pages.length - 1;
+    count.textContent = 'Étape ' + (i + 1) + ' sur ' + pages.length; err.hidden = true; cur = i;
+    var top = form.getBoundingClientRect().top + window.scrollY - 100; if (window.scrollY > top) window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  function validate(page) {
+    var bad = [];
+    [].forEach.call(page.querySelectorAll('input[required],textarea[required]'), function (el) {
+      var ok = el.value.trim() !== '' && (el.type !== 'email' || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim()));
+      el.closest('.rf-field').classList.toggle('is-invalid', !ok); if (!ok) bad.push(el);
+    });
+    [].forEach.call(page.querySelectorAll('[data-required-group]'), function (g) {
+      var ok = !!g.querySelector('input:checked'); g.closest('.rf-field').classList.toggle('is-invalid', !ok); if (!ok) bad.push(g.querySelector('input'));
+    });
+    if (bad.length) { err.textContent = bad.length === 1 ? 'Une réponse est manquante.' : bad.length + ' réponses sont manquantes. Merci de répondre à toutes les questions.'; err.hidden = false; bad[0].focus(); return false; }
+    return true;
+  }
+  form.addEventListener('change', function (e) {
+    var yn = e.target.closest('[data-yn]');
+    if (yn && e.target.type === 'radio') { var det = yn.querySelector('.yn__det'); det.hidden = e.target.value !== det.getAttribute('data-when'); yn.classList.toggle('is-yes', e.target.value === 'Oui'); }
+    var f = e.target.closest('.rf-field'); if (f) f.classList.remove('is-invalid');
+  });
+  next.addEventListener('click', function () { if (validate(pages[cur])) show(cur + 1); });
+  back.addEventListener('click', function () { show(cur - 1); });
+  steps.forEach(function (s, k) { s.addEventListener('click', function () {
+    if (k < cur) return show(k);
+    for (var i = cur; i < k; i++) { if (!validate(pages[i])) { show(i); validate(pages[i]); return; } }
+    show(k);
+  }); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    for (var i = 0; i < pages.length; i++) { if (!validate(pages[i])) { show(i); validate(pages[i]); return; } }
+    // À brancher plus tard : envoi des réponses (Zoho ou autre). Rien n'est transmis ni enregistré pour l'instant.
+    form.hidden = true; document.querySelector('.demo-note').hidden = true;
+    var done = document.getElementById('qs-done'); done.hidden = false; done.focus();
+    document.querySelector('.journey li.is-current').classList.replace('is-current', 'is-done');
+    document.querySelector('.journey li:last-child').classList.add('is-current');
+    window.scrollTo({ top: done.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+  });
+})();
+</script>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2>Transemondes</h2>
+        <p style="margin-top:12px;max-width:40ch">Respiration Holotropique, ateliers de Breathwork et retraites Yoga Transe à Paris et en région.</p>
+        <a class="btn btn--primary btn--sm" href="https://forms.zohopublic.eu/transemondes1/form/InscriptionlaNewsletterTransemondes/formperma/RJUW5Ew4ZyPxOD1g-yYK9OyUsGYJXBHaEEGx0WlEY7M" target="_blank" rel="noopener">S'inscrire à la newsletter <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div>
+        <h3>Pages</h3>
+        <ul>
+          <li><a href="index.html">Respiration holotropique</a></li>
+          <li><a href="breathwork.html">Ateliers Breathwork YT</a></li>
+          <li><a href="retraite.html">Retraites YT</a></li>
+          <li><a href="qui-suis-je.html">Qui suis-je ?</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li>Marina Charpentier</li>
+          <li><a href="tel:+33624074646">06 24 07 46 46</a></li>
+          <li><a href="mailto:marina.charpentier@transemondes.com">marina.charpentier<wbr>@transemondes.com</a></li>
+          <li>Paris 18ème (M° La Fourche)</li>
+        </ul>
+        <p style="margin-top:18px">Rejoindre la page Yoga Transe sur Facebook :<br><a href="https://www.facebook.com/profile.php?id=100092172213546" target="_blank" rel="noopener">Rejoindre la page Facebook</a></p>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© Transemondes</span>
+      <span>Respiration Holotropique · Yoga · Méditation · Breathwork</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js?v=83fb7ee5"></script>
+</body>
+</html>

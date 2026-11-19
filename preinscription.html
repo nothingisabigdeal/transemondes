@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=60650b18">
+<link rel="stylesheet" href="assets/style.css?v=534aa29b">
 </head>
 <body data-page="rh">
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -61,6 +61,11 @@
 <section class="hero hero--form" id="accueil">
   <div class="wrap">
     <div class="hero__body">
+      <ol class="journey" aria-label="Votre parcours d'inscription">
+        <li class="is-current"><span>1</span>Pré-inscription</li>
+        <li><span>2</span>Questionnaire de santé</li>
+        <li><span>3</span>Entretien &amp; confirmation</li>
+      </ol>
       <span class="eyebrow">Pré-inscription</span>
       <h1>Inscription Stage de <em>Respiration Holotropique</em></h1>
       <p class="hero__lead">Journées et stages à Paris et en région. Le formulaire se remplit en 4 étapes ; vos réponses ne sont envoyées qu'à la dernière.</p>
@@ -70,7 +75,7 @@
 
 <section class="section section--surface" id="formulaire" style="padding-top:clamp(40px,6vw,72px)">
   <div class="wrap form-layout">
-    <form class="rf" id="rf" action="https://forms.zohopublic.eu/transemondes1/form/InscriptionStagedeRespirationHolotropique/formperma/bk4jv-dNyP4jjFnSE_053d0vlbsL6WaOH8g-DALpey8/htmlRecords/submit" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" novalidate>
+    <form class="rf" id="rf" action="https://forms.zohopublic.eu/transemondes1/form/InscriptionStagedeRespirationHolotropique/formperma/bk4jv-dNyP4jjFnSE_053d0vlbsL6WaOH8g-DALpey8/htmlRecords/submit" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" target="zoho-sink" novalidate>
       <input type="hidden" name="zf_referrer_name" value="">
       <input type="hidden" name="zf_redirect_url" value="">
       <input type="hidden" name="zc_gad" value="">
@@ -216,10 +221,12 @@
       </div>
     </form>
 
+    <iframe name="zoho-sink" id="zoho-sink" title="Envoi" hidden></iframe>
     <aside class="form-aside">
       <div class="card">
         <span class="eyebrow">Après l'envoi</span>
         <ol class="mini-steps">
+          <li><b>Questionnaire de santé</b><span>Vous êtes redirigé·e vers le questionnaire juste après l'envoi.</span></li>
           <li><b>Entretien préalable</b><span>Pour une première participation : un entretien en visio de 30 à 40 minutes.</span></li>
           <li><b>Confirmation</b><span>Je valide votre inscription et vous indique l'acompte à régler.</span></li>
           <li><b>Acompte</b><span>Votre place est réservée à réception de l'acompte.</span></li>
@@ -337,6 +344,12 @@
     document.getElementById('f-date-zoho').value = d ? d.slice(8, 10) + '-' + MONTHS[+d.slice(5, 7) - 1] + '-' + d.slice(0, 4) : '';
     [].forEach.call(form.querySelectorAll('[data-show-if][hidden] input, [data-show-if][hidden] textarea'), function (el) { el.value = ''; });
     submit.disabled = true; submit.firstChild.textContent = 'Envoi en cours… ';
+    // Après l'envoi à Zoho (dans un cadre invisible), on enchaîne sur le questionnaire de santé
+    var params = new URLSearchParams({ prenom: document.getElementById('f-prenom').value.trim(), nom: document.getElementById('f-nom').value.trim(),
+      email: document.getElementById('f-email').value.trim(), stage: stage.value, from: 'preinscription' });
+    var go = function () { location.href = 'questionnaire-sante.html?' + params.toString(); }, sink = document.getElementById('zoho-sink');
+    sink.addEventListener('load', function () { setTimeout(go, 300); }, { once: true });
+    setTimeout(go, 8000);
   });
   cond();
 })();

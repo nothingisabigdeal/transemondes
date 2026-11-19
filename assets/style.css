@@ -706,3 +706,51 @@ a[href^="mailto:"] { overflow-wrap: anywhere; }
   .rf-recap dl { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .rf-recap dt { margin-top: 10px; font-size: .78rem; }
 }
+
+/* ---------- Parcours d'inscription ---------- */
+.journey { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 4px; margin-bottom: 22px; }
+.journey li { display: inline-flex; align-items: center; gap: 8px; font: 600 .8rem/1.2 var(--f-display); color: var(--muted); }
+.journey li + li::before { content: ""; width: 22px; height: 1.5px; background: var(--line); margin-right: 4px; }
+.journey span { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--line); background: #FFFFFF; font-size: .75rem; }
+.journey .is-current { color: var(--ink-strong); }
+.journey .is-current span { background: var(--orange); border-color: var(--orange); color: #FFFFFF; }
+.journey .is-done { color: var(--blue); }
+.journey .is-done span { background: var(--blue); border-color: var(--blue); color: #FFFFFF; }
+.hello { margin-top: 18px; padding: 14px 18px; border-radius: 12px; background: var(--blue-soft); color: var(--ink-strong); font-weight: 500; max-width: 60ch; }
+
+/* ---------- Questionnaire de santé ---------- */
+.demo-note { padding: 12px 16px; border-radius: 10px; background: #FFF4D6; border: 1px solid #F1D48A; color: #6B4E00; font-size: .9rem; }
+.qs-intro { display: grid; gap: 10px; font-size: .95rem; color: var(--ink); padding: 16px 18px; border-radius: 12px; background: var(--tint); }
+.qs-intro summary { cursor: pointer; font-weight: 600; color: var(--orange-deep); }
+.qs-intro details p { margin-top: 10px; }
+.yn-list { display: grid; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.yn { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; align-items: center; padding: 12px 16px; background: #FFFFFF; }
+.yn-list .yn + .yn { border-top: 1px solid var(--line); }
+.yn.is-yes { background: #FFFBF4; }
+.yn__q { font-size: .94rem; line-height: 1.45; color: var(--ink-strong); }
+.yn--q { border: 1px solid var(--line); border-radius: 12px; }
+.yn--q .yn__q { font-weight: 600; }
+.yn__opts { display: flex; gap: 6px; }
+.yn__det { grid-column: 1 / -1; display: grid; gap: 6px; }
+.yn__det label { font-size: .84rem; font-weight: 600; color: var(--muted); }
+.pill { position: relative; cursor: pointer; }
+.pill input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.pill span { display: inline-block; min-width: 58px; text-align: center; padding: 7px 14px; border-radius: 999px; border: 1.5px solid #DCE2EA; font: 600 .85rem var(--f-display); color: var(--muted); background: #FFFFFF; transition: .15s; }
+.pill input:checked + span { background: var(--blue); border-color: var(--blue); color: #FFFFFF; }
+.pill input[value="Oui"]:checked + span { background: var(--orange); border-color: var(--orange); }
+.pill input:focus-visible + span { outline: 2px solid var(--orange); outline-offset: 2px; }
+.rf-field.is-invalid .pill span { border-color: #C2543E; }
+.declaration { padding: 18px 20px; border-radius: 12px; background: var(--blue-soft); }
+.declaration h3 { font-size: 1rem; margin-bottom: 8px; color: var(--blue); }
+.declaration p { font-size: .94rem; }
+.qs-done { gap: 16px; }
+@media (max-width: 640px) {
+  .yn { grid-template-columns: minmax(0, 1fr); }
+  .journey li + li::before { width: 10px; }
+}
+@media (max-width: 640px) {
+  .journey { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .journey li { flex-direction: column; text-align: center; gap: 6px; font-size: .7rem; padding: 8px 4px; border-radius: 10px; background: #FFFFFF; border: 1px solid var(--line); }
+  .journey li + li::before { display: none; }
+  .journey .is-current { border-color: var(--orange); }
+}

@@ -120,6 +120,8 @@ META = {
                   "https://zfrmz.eu/m7InI4uDILU2KuvXhcYB", "Me pré-inscrire"),
   "preinscription": ("Pré-inscription Respiration Holotropique", "Formulaire de pré-inscription aux journées et stages de Respiration Holotropique.", "rh",
                   "#formulaire", "Me pré-inscrire"),
+  "questionnaire-sante": ("Questionnaire de santé", "Questionnaire de santé confidentiel avant une journée ou un stage de Respiration Holotropique.", "rh",
+                  "preinscription.html", "Me pré-inscrire"),
   "qui-suis-je": ("Marina Charpentier", "Psychopraticienne transpersonnelle, facilitatrice en Respiration Holotropique.", "qui",
                   "preinscription.html", "Me pré-inscrire"),
 }
