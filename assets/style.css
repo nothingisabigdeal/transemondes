@@ -572,7 +572,7 @@ a[href^="mailto:"] { overflow-wrap: anywhere; }
 .media-split__text { display: grid; gap: 0; min-width: 0; }
 .media-split__text .prose { margin-top: 28px; }
 .media-split--reverse .media-split__text { order: 2; }
-.mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; top: 112px; min-width: 0; }
+.mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-width: 0; }
 .mosaic .media { aspect-ratio: 1; }
 .mosaic .media:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
 .mosaic--5 { grid-template-columns: repeat(4, 1fr); }

@@ -234,6 +234,13 @@ async function run() {
   { const f = await load('questionnaire-sante.html#prenom=Camille&email=c%40e.fr', 390, 900); const d = f.contentDocument, $ = s => d.querySelector(s);
     ok('[questionnaire] arrivée par e-mail : pas de bloc de confirmation, message de bienvenue', $('#welcome').hidden && !$('#hello').hidden && $('#hello').textContent.includes('5 minutes')); }
 
+  // 15. Les photos ne restent pas collées à l'écran pendant le défilement
+  for (const p of ['index', 'breathwork', 'retraite', 'qui-suis-je']) {
+    const f = await load(p + '.html', 1280); const d = f.contentDocument, w = f.contentWindow;
+    const stuck = [...d.querySelectorAll('figure, .media, .mosaic')].filter(e => { for (let x = e; x && x !== d.body; x = x.parentElement) { const ps = w.getComputedStyle(x).position; if (ps === 'sticky' || ps === 'fixed') return !x.classList.contains('site-header'); } return false; });
+    ok(`[${p}] aucune photo collée à l'écran au défilement`, stuck.length === 0, stuck.length + ' photo(s)');
+  }
+
   const fails = R.filter(r => !r.pass);
   document.getElementById('out').textContent = JSON.stringify({ total: R.length, fails: fails.length, failures: fails, all: R.map(r => (r.pass ? 'OK  ' : 'KO  ') + r.name + (r.info ? '  (' + r.info + ')' : '')) });
 }
