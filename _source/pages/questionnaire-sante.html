@@ -4,6 +4,22 @@
     <div class="hero__body">
       <h1>Questionnaire de santé <em>Respiration Holotropique</em></h1>
       <p class="hello" id="hello" hidden></p>
+      <div class="welcome" id="welcome" hidden>
+        <p class="welcome__ok"><span class="welcome__check" aria-hidden="true">✓</span><span>Votre pré-inscription est bien envoyée<span id="welcome-name"></span>.</span></p>
+        <p>Marina vous recontactera pour la suite. Vous allez aussi recevoir un e-mail de confirmation.</p>
+        <div class="welcome__next">
+          <p class="welcome__title">Prochaine étape : le questionnaire de santé <span class="welcome__time">environ 5 minutes</span></p>
+          <p>La Respiration Holotropique peut impliquer des expériences intenses. Ces questions permettent à Marina de vous accompagner dans les meilleures conditions de sécurité. Vos réponses restent strictement confidentielles.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="#questionnaire" id="welcome-go">Remplir le questionnaire maintenant {{ARROW}}</a>
+            <button type="button" class="btn btn--ghost" id="welcome-later">Je le ferai plus tard</button>
+          </div>
+        </div>
+        <div class="welcome__later" id="welcome-later-msg" hidden>
+          <p><b>Pas de souci.</b> Vous retrouverez le lien vers ce questionnaire dans l'e-mail de confirmation. Merci de le compléter avant l'entretien préalable.</p>
+          <a class="btn btn--ghost" href="index.html">Retour à l'accueil</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -314,7 +330,18 @@
   set('q-prenom', 'prenom'); set('q-nom', 'nom'); set('q-email', 'email'); set('q-stage', 'stage');
   var full = ((q.get('prenom') || '') + ' ' + (q.get('nom') || '')).trim();
   if (full) document.getElementById('q-signnom').value = full;
-  if (q.get('prenom')) { var h = document.getElementById('hello'); h.textContent = 'Merci ' + q.get('prenom') + ' pour votre demande d’inscription. Dernière étape : ce questionnaire, nécessaire pour vous accompagner en toute sécurité.'; h.hidden = false; }
+  if (q.get('from') === 'preinscription') {
+    // Arrivée juste après la pré-inscription : confirmation + explication de l'étape suivante
+    if (q.get('prenom')) document.getElementById('welcome-name').textContent = ', ' + q.get('prenom');
+    document.getElementById('welcome').hidden = false;
+    document.getElementById('welcome-later').addEventListener('click', function () {
+      document.querySelector('.welcome__next').hidden = true; document.getElementById('welcome-later-msg').hidden = false;
+      document.getElementById('questionnaire').hidden = true;
+    });
+  } else if (q.get('prenom')) {
+    // Arrivée par le lien de l'e-mail
+    var h = document.getElementById('hello'); h.textContent = 'Bonjour ' + q.get('prenom') + ', merci de compléter ce questionnaire de santé (environ 5 minutes) avant notre entretien.'; h.hidden = false;
+  }
   if (location.hash || location.search) history.replaceState(null, '', location.pathname);
   var d = new Date(); document.getElementById('q-date').value = d.toLocaleDateString('fr-FR');
 

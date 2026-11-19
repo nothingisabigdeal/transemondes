@@ -226,6 +226,14 @@ async function run() {
     ok(`[${p}] langue déclarée (fr)`, d.documentElement.lang === 'fr');
   }
 
+  // 14. Questionnaire : bloc d'accueil après la pré-inscription, message « par e-mail » sinon
+  { const f = await load('questionnaire-sante.html#prenom=Camille&from=preinscription', 390, 900); const d = f.contentDocument, $ = s => d.querySelector(s);
+    ok('[questionnaire] bloc « pré-inscription bien envoyée » affiché après la pré-inscription', !$('#welcome').hidden && $('#welcome').textContent.includes('Camille') && $('#hello').hidden);
+    $('#welcome-later').click(); await wait(50);
+    ok('[questionnaire] « Je le ferai plus tard » affiche le message et masque le questionnaire', !$('#welcome-later-msg').hidden && $('#questionnaire').hidden); }
+  { const f = await load('questionnaire-sante.html#prenom=Camille&email=c%40e.fr', 390, 900); const d = f.contentDocument, $ = s => d.querySelector(s);
+    ok('[questionnaire] arrivée par e-mail : pas de bloc de confirmation, message de bienvenue', $('#welcome').hidden && !$('#hello').hidden && $('#hello').textContent.includes('5 minutes')); }
+
   const fails = R.filter(r => !r.pass);
   document.getElementById('out').textContent = JSON.stringify({ total: R.length, fails: fails.length, failures: fails, all: R.map(r => (r.pass ? 'OK  ' : 'KO  ') + r.name + (r.info ? '  (' + r.info + ')' : '')) });
 }
