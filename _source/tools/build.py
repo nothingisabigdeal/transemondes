@@ -39,7 +39,7 @@ HEAD = """<!doctype html>
 HEADER = f"""<header class="site-header">
   <div class="wrap">
     <a class="brand" href="index.html">
-      <img src="assets/img/logo-128.png" alt="" width="40" height="40">
+      <img src="assets/img/logo-80.png" alt="" width="40" height="40">
       <span><span class="brand__name">Transemondes</span><span class="brand__sub">Respiration holotropique · Yoga Transe</span></span>
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav"><span>Menu</span></button>

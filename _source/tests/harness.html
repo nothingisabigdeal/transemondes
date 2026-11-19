@@ -31,7 +31,10 @@ async function run() {
       const sw = d.documentElement.scrollWidth; ok(`[${p} @${w}] pas de débordement horizontal`, sw <= w, 'scrollWidth=' + sw);
       if ((w === 390 || w === 1280) && p !== '404') { // la 404 utilise des adresses du serveur (/transemondes/), testée en ligne
         await wait(300);
-        const broken = [...d.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.getAttribute('src'));
+        // on force le chargement des images différées, puis on attend que chacune ait fini (ou échoué)
+        [...d.images].forEach(i => { i.loading = 'eager'; });
+        await Promise.all([...d.images].map(i => (i.complete && i.naturalWidth) ? 0 : new Promise(r => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); setTimeout(r, 4000); })));
+        const broken = [...d.images].filter(i => i.naturalWidth === 0).map(i => i.getAttribute('src'));
         ok(`[${p} @${w}] toutes les images se chargent`, broken.length === 0, broken.join(', '));
         const ids = [...d.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
         ok(`[${p}] pas d'id en double`, dup.length === 0, dup.join(', '));
