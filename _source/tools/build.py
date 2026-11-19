@@ -20,7 +20,7 @@ HEAD = """<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v={css_v}">
 </head>
 <body data-page="{page}">
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -106,7 +106,7 @@ FOOTER = f"""</main>
     </div>
   </div>
 </footer>
-<script src="assets/main.js"></script>
+<script src="assets/main.js?v=__JSV__"></script>
 </body>
 </html>
 """
@@ -122,9 +122,13 @@ META = {
                   "https://zfrmz.eu/KnjV2EiK7l2bAOtEc0mV", "Me pré-inscrire"),
 }
 
+import hashlib
+def _v(f): return hashlib.md5((OUT / f).read_bytes()).hexdigest()[:8]
+CSS_V, JS_V = _v("assets/style.css"), _v("assets/main.js")
+
 for name, (title, desc, page, cta, cta_label) in META.items():
     body = (PAGES / f"{name}.html").read_text(encoding="utf-8").replace("{{ARROW}}", ARROW)
-    html = HEAD.format(title=title, desc=desc, page=page) + HEADER.replace("{cta}", cta).replace("{cta_label}", cta_label) + body + FOOTER
+    html = HEAD.format(title=title, desc=desc, page=page, css_v=CSS_V) + HEADER.replace("{cta}", cta).replace("{cta_label}", cta_label) + body + FOOTER.replace("__JSV__", JS_V)
     (OUT / f"{name}.html").write_text(html, encoding="utf-8")
     print("écrit", name)
 

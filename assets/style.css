@@ -463,3 +463,4 @@ th.num { text-align: right; }
   .hero-dates { grid-template-columns: 1fr; padding: 22px; }
   .hero-dates__col + .hero-dates__col { padding-left: 0; border-left: 0; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.18); }
 }
+a[href^="mailto:"] { overflow-wrap: anywhere; }
