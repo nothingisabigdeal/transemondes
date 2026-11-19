@@ -34,7 +34,13 @@ async function run() {
         // on force le chargement des images différées, puis on attend que chacune ait fini (ou échoué)
         [...d.images].forEach(i => { i.loading = 'eager'; });
         await Promise.all([...d.images].map(i => (i.complete && i.naturalWidth) ? 0 : new Promise(r => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); setTimeout(r, 4000); })));
-        const broken = [...d.images].filter(i => i.naturalWidth === 0).map(i => i.getAttribute('src'));
+        // une image « vide » peut juste être un chargement interrompu par le changement de largeur : on retente chaque fichier (src et srcset) à part
+        const tryLoad = url => new Promise(r => { const im = new Image(); im.onload = () => r(im.naturalWidth > 0); im.onerror = () => r(false); im.src = url; setTimeout(() => r(false), 5000); });
+        const broken = [];
+        for (const i of [...d.images].filter(i => i.naturalWidth === 0)) {
+          const urls = [i.getAttribute('src'), ...(i.getAttribute('srcset') || '').split(',').map(x => x.trim().split(' ')[0]).filter(Boolean)];
+          for (const u of urls) { if (!(await tryLoad(new URL(u, d.baseURI).href))) broken.push(u); }
+        }
         ok(`[${p} @${w}] toutes les images se chargent`, broken.length === 0, broken.join(', '));
         const ids = [...d.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
         ok(`[${p}] pas d'id en double`, dup.length === 0, dup.join(', '));
