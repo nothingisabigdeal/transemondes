@@ -19,6 +19,31 @@
     });
   }
 
+  // Sous-menus (ordinateur et tablette) : ouverture au clic / toucher, pas seulement au survol
+  var items = [].slice.call(document.querySelectorAll('.nav__item'));
+  function closeAll(except) {
+    items.forEach(function (it) { if (it !== except) { it.classList.remove('is-open'); var b = it.querySelector('.nav__link'); if (b) b.setAttribute('aria-expanded', 'false'); } });
+  }
+  items.forEach(function (it) {
+    var trig = it.querySelector('.nav__link'), menu = it.querySelector('.nav__menu');
+    if (!trig || !menu) return;
+    trig.setAttribute('aria-haspopup', 'true'); trig.setAttribute('aria-expanded', 'false');
+    trig.addEventListener('click', function (e) {
+      if (window.matchMedia('(max-width: 1000px)').matches) return; // menu mobile : tout est déjà déplié
+      // un bouton ouvre/ferme son sous-menu ; un lien s'ouvre au 1er toucher sur écran tactile, puis navigue
+      var touch = window.matchMedia('(hover: none)').matches;
+      if (trig.tagName === 'BUTTON' || (touch && !it.classList.contains('is-open'))) {
+        e.preventDefault();
+        var open = !it.classList.contains('is-open'); closeAll(it);
+        it.classList.toggle('is-open', open); trig.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+    });
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.nav__item')) closeAll(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { var open = document.querySelector('.nav__item.is-open'); closeAll(); if (open) open.querySelector('.nav__link').focus(); }
+  });
+
   // Rubrique active
   var page = document.body.getAttribute('data-page');
   document.querySelectorAll('.nav__item[data-section]').forEach(function (item) {

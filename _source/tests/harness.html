@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Tests Transemondes</title></head>
+<body style="margin:0;background:#888">
+<pre id="out">EN COURS</pre>
+<div id="stage"></div>
+<script>
+/* Batterie de tests interactifs. Ouvrir via run_tests.py (Chrome headless). Aucun envoi réel vers Zoho. */
+const ROOT = '../../';
+const PAGES = ['index','breathwork','retraite','qui-suis-je','preinscription','questionnaire-sante','versions','version-1','version-2','version-3','version-4','version-5','version-6'];
+const WIDTHS = [320, 360, 390, 414, 768, 1000, 1024, 1280, 1440];
+const R = []; const ok = (name, pass, info) => R.push({ name, pass: !!pass, info: info || '' });
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function load(page, w, h) {
+  return new Promise(res => {
+    const st = document.getElementById('stage'); st.innerHTML = '';
+    const f = document.createElement('iframe'); f.style.cssText = `width:${w}px;height:${h || 844}px;border:0;background:#fff`;
+    f.onload = async () => { const d = f.contentDocument; d.documentElement.style.scrollBehavior = 'auto';
+      // en mode test, Chrome fige les animations CSS : on les coupe pour tester l'état final
+      const st = d.createElement('style'); st.textContent = '*,*::before,*::after{transition:none!important;animation:none!important}'; d.head.appendChild(st);
+      await wait(250); res(f); };
+    f.src = ROOT + page; st.appendChild(f);
+  });
+}
+const vis = el => { if (!el) return false; const r = el.getBoundingClientRect(), s = getComputedStyle(el); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none' && +s.opacity > 0; };
+
+async function run() {
+  // 1. Débordement horizontal, images, ids en double, sur toutes les pages et largeurs
+  for (const p of PAGES) {
+    for (const w of WIDTHS) {
+      const f = await load(p + '.html', w); const d = f.contentDocument;
+      const sw = d.documentElement.scrollWidth; ok(`[${p} @${w}] pas de débordement horizontal`, sw <= w, 'scrollWidth=' + sw);
+      if (w === 390 || w === 1280) {
+        await wait(300);
+        const broken = [...d.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.getAttribute('src'));
+        ok(`[${p} @${w}] toutes les images se chargent`, broken.length === 0, broken.join(', '));
+        const ids = [...d.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
+        ok(`[${p}] pas d'id en double`, dup.length === 0, dup.join(', '));
+        // Liens d'ancre internes : la cible existe
+        const missing = [...d.querySelectorAll('a[href^="#"]')].map(a => a.getAttribute('href')).filter(h => h.length > 1 && !d.getElementById(decodeURIComponent(h.slice(1))));
+        ok(`[${p}] ancres de la page existantes`, missing.length === 0, [...new Set(missing)].join(', '));
+        // Header ne masque pas le haut du contenu
+        const hdr = d.querySelector('.site-header'); if (hdr) ok(`[${p} @${w}] en-tête visible`, vis(hdr));
+      }
+    }
+  }
+
+  // 2. Menu mobile : ouverture plein écran, liens cliquables, fermeture, blocage du défilement
+  for (const p of ['index','breathwork','retraite','qui-suis-je','preinscription','questionnaire-sante','version-4']) {
+    for (const w of [320, 390, 768, 1000]) {
+      const f = await load(p + '.html', w); const d = f.contentDocument, win = f.contentWindow;
+      win.scrollTo(0, 1200); await wait(100);
+      const t = d.querySelector('.menu-toggle'); ok(`[${p} @${w}] bouton Menu visible`, vis(t));
+      t.click(); await wait(200);
+      const nav = d.querySelector('.nav'), r = nav.getBoundingClientRect(), vh = win.innerHeight;
+      ok(`[${p} @${w}] menu ouvert couvre l'écran`, r.top < 100 && r.bottom >= vh - 2 && r.width >= w - 2, `top=${Math.round(r.top)} bottom=${Math.round(r.bottom)} vh=${vh} width=${Math.round(r.width)}`);
+      ok(`[${p} @${w}] fond du menu opaque`, getComputedStyle(nav).backgroundColor !== 'rgba(0, 0, 0, 0)');
+      ok(`[${p} @${w}] défilement de la page bloqué`, getComputedStyle(d.body).overflow === 'hidden');
+      ok(`[${p} @${w}] aria-expanded = true`, t.getAttribute('aria-expanded') === 'true');
+      const links = [...nav.querySelectorAll('a')];
+      const hidden = links.filter(a => { const b = a.getBoundingClientRect(); return b.height === 0; });
+      ok(`[${p} @${w}] tous les liens du menu affichés`, hidden.length === 0, hidden.length + ' masqués');
+      // élément au centre d'un lien = le lien lui-même (rien par-dessus)
+      for (const a0 of [links[0], links[Math.floor(links.length / 2)]]) {
+        a0.scrollIntoView({ block: 'center' }); await wait(30);
+        const ab = a0.getBoundingClientRect(); const hit = d.elementFromPoint(ab.left + 5, ab.top + ab.height / 2);
+        ok(`[${p} @${w}] lien « ${a0.textContent.trim().slice(0, 25)} » cliquable (rien par-dessus)`, hit === a0 || a0.contains(hit), hit ? hit.tagName + '.' + hit.className : 'null');
+      }
+      // le dernier lien (bouton pré-inscription) est atteignable en faisant défiler le menu
+      const last = links[links.length - 1]; nav.scrollTop = nav.scrollHeight; await wait(50);
+      const lb = last.getBoundingClientRect(); ok(`[${p} @${w}] dernier élément du menu atteignable`, lb.bottom <= vh + 1 && lb.top >= 0, `top=${Math.round(lb.top)} bottom=${Math.round(lb.bottom)}`);
+      const hitL = d.elementFromPoint(lb.left + 10, lb.top + lb.height / 2);
+      ok(`[${p} @${w}] bouton « Me pré-inscrire » du menu cliquable`, hitL === last || last.contains(hitL), hitL ? hitL.tagName : 'null');
+      t.click(); await wait(100);
+      ok(`[${p} @${w}] menu se referme`, getComputedStyle(nav).display === 'none' && getComputedStyle(d.body).overflow !== 'hidden');
+      t.click(); await wait(100); const anchor = [...nav.querySelectorAll('a')].find(a => a.getAttribute('href').includes('#'));
+      anchor.addEventListener('click', e => e.preventDefault(), { once: true }); anchor.click(); await wait(100);
+      ok(`[${p} @${w}] clic sur un lien referme le menu`, getComputedStyle(nav).display === 'none');
+    }
+  }
+
+  // 3. Menu ordinateur / tablette : sous-menus au clic (tactile), au clavier, Échap, clic ailleurs
+  for (const p of ['index', 'preinscription']) {
+    for (const w of [1024, 1280]) {
+      const f = await load(p + '.html', w); const d = f.contentDocument;
+      ok(`[${p} @${w}] bouton Menu caché sur grand écran`, !vis(d.querySelector('.menu-toggle')));
+      for (const item of d.querySelectorAll('.nav__item')) {
+        const trig = item.querySelector('.nav__link'), menu = item.querySelector('.nav__menu'), label = trig.textContent.trim();
+        if (trig.tagName === 'BUTTON') {
+          trig.click(); await wait(250);
+          ok(`[${p} @${w}] « ${label} » s'ouvre au clic/toucher`, vis(menu) && trig.getAttribute('aria-expanded') === 'true');
+          const first = menu.querySelector('a'); const b = first.getBoundingClientRect(); const hit = d.elementFromPoint(b.left + 5, b.top + b.height / 2);
+          ok(`[${p} @${w}] sous-menu « ${label} » cliquable`, hit === first || first.contains(hit), hit ? hit.tagName : 'null');
+          const mb = menu.getBoundingClientRect(); ok(`[${p} @${w}] sous-menu « ${label} » entièrement à l'écran`, mb.left >= 0 && mb.right <= w, `${Math.round(mb.left)}→${Math.round(mb.right)}`);
+          d.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); await wait(250);
+          ok(`[${p} @${w}] « ${label} » se ferme avec Échap`, !item.classList.contains('is-open'));
+          trig.click(); await wait(50); d.body.click(); await wait(250);
+          ok(`[${p} @${w}] « ${label} » se ferme en cliquant ailleurs`, !item.classList.contains('is-open'));
+        }
+        // ouverture au clavier : la règle CSS :focus-within est présente
+        ok(`[${p}] règle d'ouverture au clavier (:focus-within)`, [...d.styleSheets].some(ss => { try { return [...ss.cssRules].some(r => (r.selectorText || '').includes(':focus-within > .nav__menu')); } catch (e) { return false; } }));
+        // positions : chaque sous-menu, une fois ouvert, reste dans l'écran
+        item.classList.add('is-open'); await wait(250); const mb = menu.getBoundingClientRect(); item.classList.remove('is-open');
+        ok(`[${p} @${w}] sous-menu « ${label} » ne dépasse pas de l'écran`, mb.left >= 0 && mb.right <= w, `${Math.round(mb.left)}→${Math.round(mb.right)}`);
+      }
+    }
+  }
+
+  // 4. Dates passées grisées
+  { const f = await load('index.html', 1280); const d = f.contentDocument; const today = new Date(); today.setHours(0,0,0,0);
+    const wrong = [...d.querySelectorAll('[data-date]')].filter(el => (new Date(el.dataset.date + 'T23:59:59') < today) !== el.classList.contains('is-past'));
+    ok('[index] dates passées grisées et seulement elles', wrong.length === 0, wrong.map(e => e.dataset.date).join(', ')); }
+
+  // 5. Bouton Copier l'IBAN
+  { const f = await load('breathwork.html', 390); const d = f.contentDocument; const b = d.querySelector('[data-copy]');
+    b.click(); await wait(300); ok('[breathwork] bouton Copier réagit', /Copié|Sélectionné/.test(b.textContent), b.textContent); }
+
+  // 6. Pré-inscription : étapes, validation, champs conditionnels, présélection, redirection (envoi détourné, pas de Zoho)
+  { const f = await load('preinscription.html?date=2027-01-24', 390, 900); const d = f.contentDocument, $ = s => d.querySelector(s);
+    ok('[préinscription] ?date= présélectionne la date', $('#f-stage').value.includes("Stage d'Hiver"));
+    ok('[préinscription] format présélectionné', [...d.querySelectorAll('input[name=MultipleChoice]:checked')].map(c => c.dataset.format).join() === '2');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const past = [...$('#f-stage').options].filter(o => o.dataset.date && new Date(o.dataset.date + 'T23:59:59') < today);
+    ok('[préinscription] dates passées retirées de la liste', past.length === 0, past.map(o => o.value).join(' | '));
+    $('#rf-next').click(); await wait(100);
+    ok('[préinscription] étape 1 bloquée si champs vides', !$('#rf-error').hidden && !d.querySelectorAll('.rf-page')[0].hidden);
+    $('#f-nom').value = 'Test'; $('#f-email').value = 'pas-un-email'; $('#f-tel').value = '0600000000';
+    $('#rf-next').click(); await wait(100); ok('[préinscription] e-mail invalide refusé', $('#f-email').closest('.rf-field').classList.contains('is-invalid'));
+    $('#f-email').value = 'test@exemple.fr'; $('#f-prenom').value = 'Camille'; $('#rf-next').click(); await wait(100);
+    ok('[préinscription] passage à l\'étape 2', !d.querySelectorAll('.rf-page')[1].hidden);
+    const cb = d.querySelectorAll('input[name=Checkbox]'); cb[7].click(); await wait(50);
+    ok('[préinscription] « Autre expérience » affiche le champ de précision', !$('[data-show-if="exp-autre"]').hidden);
+    cb[0].click(); await wait(50);
+    ok('[préinscription] « Non, aucune expérience » décoche les autres', !cb[7].checked && $('[data-show-if="exp-autre"]').hidden);
+    $('#f-c-prenom').value = 'A'; $('#f-c-nom').value = 'B'; $('#f-c-tel').value = '0611111111'; $('#rf-next').click(); await wait(100);
+    $('#rf-next').click(); await wait(100); ok('[préinscription] étape 3 bloquée sans paiement ni annulation', !$('#rf-error').hidden);
+    d.querySelector('input[name=Radio2]').click(); d.querySelector('input[name=Radio5]').click(); $('#rf-next').click(); await wait(100);
+    ok('[préinscription] étape 4 avec récapitulatif', !d.querySelectorAll('.rf-page')[3].hidden && $('#rf-recap').textContent.includes('test@exemple.fr'));
+    $('#f-ref').value = 'Autre'; $('#f-ref').dispatchEvent(new Event('change', { bubbles: true })); await wait(50);
+    ok('[préinscription] « Autre » affiche le champ de précision', !$('[data-show-if="ref-autre"]').hidden);
+    ok('[préinscription] envoi prévu vers Zoho (HTTPS)', $('#rf').action.startsWith('https://forms.zohopublic.eu/'));
+    // Envoi détourné vers une page locale vide : on vérifie seulement la redirection vers le questionnaire
+    $('#rf').action = 'about:blank';
+    const nav = new Promise(res => { const t0 = Date.now(); const iv = setInterval(() => { let href = ''; try { href = f.contentWindow.location.href; } catch (e) {} if (href.includes('questionnaire-sante') || Date.now() - t0 > 10000) { clearInterval(iv); res(href); } }, 100); });
+    $('#rf-submit').click(); const href = await nav;
+    ok('[préinscription] redirection vers le questionnaire après envoi', href.includes('questionnaire-sante'), href.split('/').pop());
+    await wait(500); const q = f.contentDocument;
+    ok('[préinscription] données personnelles jamais dans la partie de l\'adresse envoyée au serveur', !href.split('#')[0].includes('@') && !href.split('#')[0].includes('Camille'), href.split('/').pop());
+    ok('[questionnaire] adresse nettoyée après lecture (plus de nom ni d\'e-mail)', !f.contentWindow.location.href.includes('@') && !f.contentWindow.location.href.includes('Camille'), f.contentWindow.location.href.split('/').pop());
+    ok('[questionnaire] prérempli depuis la pré-inscription', q.querySelector('#q-prenom').value === 'Camille' && q.querySelector('#q-email').value === 'test@exemple.fr');
+  }
+
+  // 7. Questionnaire de santé : validation, Oui → précisions, fin
+  { const f = await load('questionnaire-sante.html#prenom=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E&nom=Exemple&email=c%40e.fr', 390, 900); const d = f.contentDocument, $ = s => d.querySelector(s);
+    ok('[questionnaire] paramètre malveillant affiché comme texte (pas de XSS)', !d.querySelector('#hello img') && $('#hello').textContent.includes('<img'));
+    $('#qs-next').click(); await wait(80); ok('[questionnaire] étape 1 bloquée si réponses manquantes', !$('#qs-error').hidden);
+    const pages = d.querySelectorAll('.rf-page');
+    const answer = (pg, yes) => pg.querySelectorAll('.yn__opts').forEach(g => g.querySelector(`input[value="${yes ? 'Oui' : 'Non'}"]`).click());
+    answer(pages[0], false); const first = pages[0].querySelector('[data-yn]'); first.querySelector('input[value=Oui]').click(); await wait(50);
+    ok('[questionnaire] « Oui » affiche les précisions', !first.querySelector('.yn__det').hidden);
+    const sac = d.querySelector('[data-yn=q_sac]'); sac.querySelector('input[value=Non]').click(); await wait(50);
+    ok('[questionnaire] « Non » au sac de courses affiche « Si non, précisez »', !sac.querySelector('.yn__det').hidden);
+    $('#qs-prenom, #q-prenom').value = 'Camille'; $('#qs-next').click(); await wait(80);
+    answer(pages[1], false); $('#qs-next').click(); await wait(80); answer(pages[2], false); $('#qs-next').click(); await wait(80);
+    $('#qs-submit').click(); await wait(80); ok('[questionnaire] envoi bloqué sans déclaration ni signature', !$('#qs-error').hidden);
+    d.querySelector('input[name=declaration]').click(); $('#q-sign').value = 'Camille'; $('#qs-submit').click(); await wait(150);
+    ok('[questionnaire] écran de fin affiché', !$('#qs-done').hidden && $('#qs').hidden);
+    let stored = 0; try { stored = f.contentWindow.localStorage.length + f.contentWindow.sessionStorage.length; } catch (e) {}
+    ok('[questionnaire] aucune donnée de santé stockée dans le navigateur', stored === 0, 'éléments stockés : ' + stored);
+  }
+
+  // 8. Variante 4 : prochaine date calculée
+  { const f = await load('version-4.html', 1280); const d = f.contentDocument; const n = d.querySelector('[data-f=n]').textContent;
+    ok('[version-4] prochaine date affichée', /^\d+$/.test(n), n); }
+
+  const fails = R.filter(r => !r.pass);
+  document.getElementById('out').textContent = JSON.stringify({ total: R.length, fails: fails.length, failures: fails, all: R.map(r => (r.pass ? 'OK  ' : 'KO  ') + r.name + (r.info ? '  (' + r.info + ')' : '')) });
+}
+run().catch(e => { document.getElementById('out').textContent = JSON.stringify({ crash: String(e.stack || e) }); });
+</script>
+</body></html>

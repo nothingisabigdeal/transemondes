@@ -308,12 +308,14 @@
 
 <script>
 (function () {
-  // Lien personnel : questionnaire-sante.html?prenom=…&nom=…&email=…&stage=…
-  var q = new URLSearchParams(location.search), set = function (id, k) { var v = q.get(k); if (v) document.getElementById(id).value = v; };
+  // Lien personnel : questionnaire-sante.html#prenom=…&nom=…&email=…&stage=…
+  // (après le #, ces informations ne sont jamais envoyées au serveur ; ?prenom=… reste accepté pour compatibilité)
+  var q = new URLSearchParams(location.hash.slice(1) || location.search), set = function (id, k) { var v = q.get(k); if (v) document.getElementById(id).value = v; };
   set('q-prenom', 'prenom'); set('q-nom', 'nom'); set('q-email', 'email'); set('q-stage', 'stage');
   var full = ((q.get('prenom') || '') + ' ' + (q.get('nom') || '')).trim();
   if (full) document.getElementById('q-signnom').value = full;
   if (q.get('prenom')) { var h = document.getElementById('hello'); h.textContent = 'Merci ' + q.get('prenom') + ' pour votre demande d’inscription. Dernière étape : ce questionnaire, nécessaire pour vous accompagner en toute sécurité.'; h.hidden = false; }
+  if (location.hash || location.search) history.replaceState(null, '', location.pathname);
   var d = new Date(); document.getElementById('q-date').value = d.toLocaleDateString('fr-FR');
 
   var form = document.getElementById('qs'), pages = [].slice.call(form.querySelectorAll('.rf-page')),

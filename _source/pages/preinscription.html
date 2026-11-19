@@ -282,7 +282,7 @@
     // Après l'envoi à Zoho (dans un cadre invisible), on enchaîne sur le questionnaire de santé
     var params = new URLSearchParams({ prenom: document.getElementById('f-prenom').value.trim(), nom: document.getElementById('f-nom').value.trim(),
       email: document.getElementById('f-email').value.trim(), stage: stage.value, from: 'preinscription' });
-    var go = function () { location.href = 'questionnaire-sante.html?' + params.toString(); }, sink = document.getElementById('zoho-sink');
+    var go = function () { location.href = 'questionnaire-sante.html#' + params.toString(); }, sink = document.getElementById('zoho-sink');
     sink.addEventListener('load', function () { setTimeout(go, 300); }, { once: true });
     setTimeout(go, 8000);
   });

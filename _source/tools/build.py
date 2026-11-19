@@ -13,6 +13,8 @@ HEAD = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' https://forms.zohopublic.eu https://*.zohopublic.eu https://*.zoho.eu; frame-src https://forms.zohopublic.eu https://*.zohopublic.eu https://*.zoho.eu; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>{title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="{desc}">

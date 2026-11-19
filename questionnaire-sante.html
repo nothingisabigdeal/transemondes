@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' https://forms.zohopublic.eu https://*.zohopublic.eu https://*.zoho.eu; frame-src https://forms.zohopublic.eu https://*.zohopublic.eu https://*.zoho.eu; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Questionnaire de santé</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Questionnaire de santé confidentiel avant une journée ou un stage de Respiration Holotropique.">
@@ -10,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=a1d9ec47">
+<link rel="stylesheet" href="assets/style.css?v=a1050973">
 </head>
 <body data-page="rh">
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -367,12 +369,14 @@
 
 <script>
 (function () {
-  // Lien personnel : questionnaire-sante.html?prenom=…&nom=…&email=…&stage=…
-  var q = new URLSearchParams(location.search), set = function (id, k) { var v = q.get(k); if (v) document.getElementById(id).value = v; };
+  // Lien personnel : questionnaire-sante.html#prenom=…&nom=…&email=…&stage=…
+  // (après le #, ces informations ne sont jamais envoyées au serveur ; ?prenom=… reste accepté pour compatibilité)
+  var q = new URLSearchParams(location.hash.slice(1) || location.search), set = function (id, k) { var v = q.get(k); if (v) document.getElementById(id).value = v; };
   set('q-prenom', 'prenom'); set('q-nom', 'nom'); set('q-email', 'email'); set('q-stage', 'stage');
   var full = ((q.get('prenom') || '') + ' ' + (q.get('nom') || '')).trim();
   if (full) document.getElementById('q-signnom').value = full;
   if (q.get('prenom')) { var h = document.getElementById('hello'); h.textContent = 'Merci ' + q.get('prenom') + ' pour votre demande d’inscription. Dernière étape : ce questionnaire, nécessaire pour vous accompagner en toute sécurité.'; h.hidden = false; }
+  if (location.hash || location.search) history.replaceState(null, '', location.pathname);
   var d = new Date(); document.getElementById('q-date').value = d.toLocaleDateString('fr-FR');
 
   var form = document.getElementById('qs'), pages = [].slice.call(form.querySelectorAll('.rf-page')),
@@ -456,6 +460,6 @@
     </div>
   </div>
 </footer>
-<script src="assets/main.js?v=83fb7ee5"></script>
+<script src="assets/main.js?v=13695e91"></script>
 </body>
 </html>

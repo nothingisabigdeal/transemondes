@@ -108,6 +108,8 @@ css_v = re.search(r'style\.css\?v=([a-f0-9]+)', cur).group(1)
 (ROOT / "versions.html").write_text(f"""<!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' https://forms.zohopublic.eu https://*.zohopublic.eu https://*.zoho.eu; frame-src https://forms.zohopublic.eu https://*.zohopublic.eu https://*.zoho.eu; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Versions de l'accueil</title><meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/style.css?v={css_v}">
