@@ -51,7 +51,7 @@ HEADER = f"""<header class="site-header">
           <a href="index.html#Pourquoi-faire-de-la-RH">Pourquoi faire de la RH ?</a>
           <a href="index.html#journees">Journées de RH à Paris</a>
           <a href="index.html#Stages">Stages de RH</a>
-          <a href="index.html#inscription">Inscription</a>
+          <a class="nav__highlight" href="index.html#inscription">Inscription <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="nav__item" data-section="breathwork retraite">
