@@ -85,6 +85,7 @@ v6_next = f'''<div class="next next--chips">
           <a href="#Stages">Voir tous les stages</a>
         </div>
       </div>'''
+OH = OH.replace('<section class="hero" id="accueil">', '<section class="hero hero--v6" id="accueil">', 1)
 OH6 = re.sub(r'<div class="next">.*?\n      </div>', lambda m: v6_next, OH, count=1, flags=re.S)
 
 V = {1: hero(old), 2: H, 3: H.replace('class="hero-dates"', 'class="hero-dates hero-dates--light"'),

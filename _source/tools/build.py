@@ -94,7 +94,7 @@ FOOTER = f"""</main>
         <ul>
           <li>Marina Charpentier</li>
           <li><a href="tel:+33624074646">06 24 07 46 46</a></li>
-          <li><a href="mailto:marina.charpentier@transemondes.com">marina.charpentier@transemondes.com</a></li>
+          <li><a href="mailto:marina.charpentier@transemondes.com">marina.charpentier<wbr>@transemondes.com</a></li>
           <li>Paris 18ème (M° La Fourche)</li>
         </ul>
         <p style="margin-top:18px">Rejoindre la page Yoga Transe sur Facebook :<br><a href="https://www.facebook.com/profile.php?id=100092172213546" target="_blank" rel="noopener">Rejoindre la page Facebook</a></p>
