@@ -464,3 +464,21 @@ th.num { text-align: right; }
   .hero-dates__col + .hero-dates__col { padding-left: 0; border-left: 0; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.18); }
 }
 a[href^="mailto:"] { overflow-wrap: anywhere; }
+
+/* ---------- Variante claire du bloc de dates (version 3) ---------- */
+.hero-dates--light {
+  background: var(--tint); color: var(--ink); box-shadow: none;
+  border: 1px solid #F3E6D1; position: relative; overflow: hidden;
+}
+.hero-dates--light::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--orange); }
+.hero-dates--light h2 { color: var(--blue); }
+.hero-dates--light .hero-dates__col + .hero-dates__col { border-color: #EADCC4; }
+.hero-dates--light .chips li { border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.hero-dates--light .chips li.is-past { background: transparent; border-style: dashed; box-shadow: none; }
+.hero-dates--light .chips li.is-past b, .hero-dates--light .chips li.is-past span { color: var(--muted); }
+.hero-dates--light .stage-list li { background: #FFFFFF; border: 1px solid var(--line); }
+.hero-dates--light .stage-list span { color: var(--muted); }
+.hero-dates--light .stage-list b { color: var(--ink-strong); }
+.hero-dates--light .hero-dates__more { color: var(--orange-deep); }
+.hero-dates--light .hero-dates__more:hover { color: var(--blue); }
+@media (max-width: 620px) { .hero-dates--light .hero-dates__col + .hero-dates__col { border-top-color: #EADCC4; } }
