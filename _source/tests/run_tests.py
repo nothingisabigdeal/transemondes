@@ -27,7 +27,7 @@ else:
 
 # ---------- 1 bis. Contrastes (WCAG AA) ----------
 print("\n=== Contrastes texte / fond (WCAG AA) ===")
-EN_ATTENTE = ["rgb(255, 255, 255) sur rgb(226,147,29)"]  # texte blanc sur boutons orange : décision de marque en attente
+EN_ATTENTE = ["rgb(255, 255, 255) sur rgb(226,147,29)"]  # texte blanc sur boutons orange : gardé volontairement (décision du 19/11)
 outc = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--allow-file-access-from-files", "--window-size=1300,900",
                        "--virtual-time-budget=60000", "--dump-dom", (ROOT / "_source/tests/contrast.html").as_uri()],
                       capture_output=True, text=True, timeout=300).stdout
@@ -38,7 +38,7 @@ if cdata is None:
 else:
     for k, v in sorted(cdata.items(), key=lambda x: float(x[1]["ratio"])):
         if any(e in k for e in EN_ATTENTE):
-            print(f"À DÉCIDER  {v['ratio']}/{v['need']}  {k}  « {v['ex']} »")
+            print(f"ACCEPTÉ  {v['ratio']}/{v['need']}  {k}  « {v['ex']} »")
         else:
             check(f"contraste suffisant : {k} « {v['ex']} »", False, f"{v['ratio']} < {v['need']} sur {', '.join(v['pages'][:3])}")
     if not [k for k in cdata if not any(e in k for e in EN_ATTENTE)]: print("OK  tous les textes ont un contraste suffisant (hors décision en attente)")
