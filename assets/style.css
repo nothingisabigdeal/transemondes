@@ -88,10 +88,15 @@ sup { font-size: .6em; }
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
-  background: rgba(255,255,255,.86);
-  backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px);
   border-bottom: 1px solid var(--line);
 }
+/* Le flou est sur une couche à part : posé sur l'en-tête, il enfermerait le menu mobile (position: fixed) dans l'en-tête */
+.site-header::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(255,255,255,.86);
+  backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px);
+}
+.site-header.is-open::before { background: var(--bg); }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 76px; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink-strong); }
 .brand img { width: 42px; height: 42px; object-fit: contain; }
